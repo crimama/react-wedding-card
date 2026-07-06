@@ -7,6 +7,7 @@ import './css/Calendar.css'
 import './css/Gallery.css'
 import './css/Location.css'
 import './css/Footer.css'
+import './css/Account.css'
 import './css/Comment.css'
 
 import Cover from './pages/Cover.js'
@@ -15,6 +16,7 @@ import Calendar from './pages/Calendar.js';
 import Location from './pages/Location.js';
 import ImgGallery from './pages/ImgGallery.js';
 import Footer from './components/Footer.js';
+import Account from './pages/Account.js';
 import Comment from './pages/Comment.js';
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
       <Calendar />
       <ImgGallery />
       <Location />
+      <Account />
       <Comment />
       <Footer />
     </div>
