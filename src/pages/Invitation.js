@@ -14,10 +14,17 @@ function Invitation() {
         <div>귀한 걸음으로 함께 축복해주시면</div>
         <div>더없는 기쁨으로 간직하겠습니다.</div>
       </div>
-      <div className='invitation__couple'>
-        <span>신랑 임훈</span>
-        <span className='invitation__divider'>·</span>
-        <span>신부 오윤경</span>
+      <div className='invitation__family'>
+        <div>
+          <span className='invitation__parents'>임혁 • 서정하</span>
+          <span>의 차남 </span>
+          <span className='invitation__child'>임 훈</span>
+        </div>
+        <div>
+          <span className='invitation__parents'>박경순</span>
+          <span>의 장녀 </span>
+          <span className='invitation__child'>오윤경</span>
+        </div>
       </div>
     </div>
   )
