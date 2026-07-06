@@ -20,11 +20,18 @@
 }
 
 .invitation__family {
-  margin: 20px 0;
+  margin: 28px 0 0;
+  line-height: 1.9;
+  font-size: x-large;
+}
+
+.invitation__parents {
+  font-weight: 500;
 }
 
 .invitation__child {
   font-weight: bold;
+  letter-spacing: 0.08em;
 }
 
 .invitation__btn-contact {
