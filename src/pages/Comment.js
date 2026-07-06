@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import bcrypt from 'bcryptjs'
+import bcrypt from '../vendor/bcrypt-browser'
 import db from '../firebase-config'
 import {
   addDoc,
