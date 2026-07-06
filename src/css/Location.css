@@ -1,55 +1,89 @@
- .location__details {
-    margin: 15px 0;
-    font-size: x-large;
-  }
+.location__details {
+  margin: 15px 0;
+  font-size: x-large;
+  line-height: 1.6;
+}
 
-  .location__details div {
-    margin-bottom: 10px;
-  }
+.location__name {
+  font-weight: bold;
+}
 
-  .location__map-icon-box {
-    padding: 5px 0;
-    margin-bottom: 20px;
-    width: 340px;
-    display: flex;
-    justify-content: space-around;
-    background-color: rgb(250, 227, 231);
-  }
+.location__address {
+  font-size: large;
+  opacity: 0.75;
+}
 
-  .location__map-icon {
-    width: 30px;
-  }
+.location__map {
+  width: 340px;
+  height: 340px;
+  border: 0;
+  border-radius: 8px 8px 0 0;
+}
 
-  .location__map-item:hover {
-    cursor: pointer;
-    background-color: rgb(247, 195, 204);
-  }
+.location__map-icon-box {
+  padding: 5px 0;
+  margin-bottom: 20px;
+  width: 340px;
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(250, 227, 231);
+  border-radius: 0 0 8px 8px;
+}
 
- .location__map-item {
+.location__map-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.location__map-item {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: rgb(95, 25, 25);
+  font-family: 'GangwonEdu';
   display: flex;
   align-items: center;
- } 
+  justify-content: center;
+  padding: 8px 2px;
+}
 
- .location__map-item span {
-    margin-left: 10px;
-    font-size: large;
- }
+.location__map-item:hover {
+  cursor: pointer;
+  background-color: rgb(247, 195, 204);
+}
 
-  .location__map {
-    width: 340px;
-    height: 340px;
-  }
+.location__map-item span {
+  margin-left: 5px;
+  font-size: medium;
+}
 
-  .location__info {
-    width: 300px;
-    text-align: left;
-    font-size: x-large;
-  }
+.location__info {
+  width: 320px;
+  text-align: left;
+  font-size: large;
+  line-height: 1.45;
+}
 
-  .location__info div {
-    margin-bottom: 7px;
-  }
+.location__section-title {
+  margin-top: 18px;
+  margin-bottom: 8px;
+  font-size: x-large;
+  font-weight: bold;
+}
 
-  .bold {
-    font-weight: bold;
-  }
+.location__content {
+  margin-bottom: 12px;
+}
+
+.location__notice {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #fdf0f0;
+  font-weight: bold;
+}
+
+.bold {
+  font-weight: bold;
+}

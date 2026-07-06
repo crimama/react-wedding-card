@@ -1,13 +1,20 @@
-.image-gallery {
-  width: 320px;
+.gallery__title {
+  margin-bottom: 18px;
 }
 
+.image-gallery {
+  width: 340px;
+}
 
-.image-gallery-fullscreen-button .image-gallery-svg, 
-.image-gallery-play-button .image-gallery-svg {
-  display: none;
+.image-gallery-slide img {
+  border-radius: 8px;
 }
 
 .image-gallery-thumbnail-image {
-  /* display: none; */
+  border-radius: 4px;
+}
+
+.image-gallery-fullscreen-button .image-gallery-svg,
+.image-gallery-play-button .image-gallery-svg {
+  display: none;
 }
