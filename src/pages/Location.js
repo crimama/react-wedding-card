@@ -76,17 +76,12 @@ function Location() {
       <div className='location__info'>
         <div className='location__section-title'>대중교통</div>
         <div className='location__content'>
-          <b>지하철 이용 시</b><br />
+          <b>대중교통 이용 시</b><br />
           지하철 2호선 <b>낙성대역 4번 출구</b>에서 나온 뒤 첫 번째 골목에서 좌회전<br />
           → 마을버스 <b>관악 02번</b> 승차<br />
           → <b>서울대후문·연구공원 정류장</b> 하차<br />
           → 길 건너 간판 참고해 도보 100m 이동<br />
           검은색 피라미드 유리 건물입니다.
-        </div>
-        <div className='location__content'>
-          <b>버스 이용 시</b><br />
-          간선 461, 641 / 지선 5413, 5524, 5528<br />
-          <b>낙성대입구</b> 하차 후 마을버스 <b>관악 02번</b> 이용
         </div>
 
         <div className='location__section-title'>자가용</div>
