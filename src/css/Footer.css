@@ -1,40 +1,47 @@
 .footer {
-    min-height: 140px;
-    padding: 20px 16px;
-    background-color: rgb(243, 180, 180);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  min-height: 150px;
+  padding: 28px 16px;
+  background-color: var(--paper-warm);
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .footer__kakao-share {
-    width: min(320px, 100%);
-    height: 48px;
-    margin-bottom: 14px;
-    border: 0;
-    border-radius: 999px;
-    background-color: #fee500;
-    color: #191919;
-    font-size: 16px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    box-shadow: 0 6px 16px rgba(80, 50, 50, 0.12);
-    cursor: pointer;
+  width: min(320px, 84vw);
+  height: 48px;
+  margin-bottom: 18px;
+  border: 0;
+  border-radius: 999px;
+  background-color: #fee500;
+  color: #191919;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 8px 18px rgba(80, 62, 50, 0.12);
+  cursor: pointer;
 }
 
 .footer__kakao-share:active {
-    transform: translateY(1px);
+  transform: translateY(1px);
 }
 
 .footer__kakao-icon {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
 }
 
 .footer__text {
-    margin: 5px;
+  margin: 5px;
+  color: var(--ink-soft);
+}
+
+.footer__credit {
+  font-size: 12px;
+  opacity: 0.65;
 }

@@ -1,94 +1,106 @@
 .comment__guide {
-  margin-top: 10px;
-  font-size: large;
+  margin-top: -8px;
+  margin-bottom: 8px;
+  font-size: 17px;
+  color: var(--ink-soft);
 }
 
 .commment_content {
   display: flex;
   flex-direction: column;
-  margin: 20px 0;
+  margin: 22px 0;
+}
+
+.commment_content > div:first-child {
+  width: min(340px, 84vw);
+  display: flex;
+  gap: 8px;
 }
 
 .commment_content input {
-  font-size: large;
+  box-sizing: border-box;
+  flex: 1;
+  min-width: 0;
+  font-size: 16px;
   font-family: 'GangwonEdu';
-  margin: 3px;
-  padding: 10px;
-  width: 145px;
-  border-radius: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  margin: 0;
+  padding: 12px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
 }
 
 .comment__message {
-  margin-top: 5px;
-  padding: 10px;
-  width: 320px;
-  height: 80px;
+  box-sizing: border-box;
+  margin-top: 8px;
+  padding: 14px;
+  width: min(340px, 84vw);
+  height: 96px;
   font-family: 'GangwonEdu';
-  font-size: large;
-  border: 1px solid rgb(179, 172, 172);
-  border-radius: 5px;
+  font-size: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  color: var(--ink);
 }
 
 .comment__count {
-  width: 340px;
-  margin-top: 4px;
+  width: min(340px, 84vw);
+  margin-top: 5px;
   text-align: right;
   font-size: small;
-  color: rgb(150, 120, 120);
+  color: var(--ink-soft);
 }
 
 .comment__btn {
-  font-size: medium;
-  margin-top: 10px;
-  background-color: rgb(246, 210, 216);
-  border: 1px solid rgb(246, 210, 216);
-  border-radius: 5px;
-  padding: 8px 0;
-  width: 340px;
+  font-size: 16px;
+  margin-top: 12px;
+  background-color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  padding: 12px 0;
+  width: min(340px, 84vw);
   font-family: 'GangwonEdu';
-  color: rgb(95, 25, 25);
+  color: #fff;
 }
 
 .comment__btn:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
 .comment__btn:hover:not(:disabled) {
-  background-color: rgb(247, 193, 202);
-  border: 1px solid rgb(247, 193, 202);
+  background-color: var(--point);
+  border-color: var(--point);
 }
 
 .comment__container-data {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
-.comment__empty {
-  font-size: large;
-  background-color: white;
-  width: 310px;
-  padding: 18px 15px;
-  margin: 5px 0;
-  border-radius: 5px;
-  line-height: 1.5;
-}
-
+.comment__empty,
 .comment__data {
-  font-size: large;
-  background-color: white;
-  width: 310px;
-  padding: 15px;
+  box-sizing: border-box;
+  font-size: 17px;
+  background-color: var(--paper-soft);
+  width: min(340px, 84vw);
+  padding: 18px 16px;
   margin: 5px 0;
-  border-radius: 5px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  line-height: 1.55;
 }
 
 .comment__data-p {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  color: var(--ink);
+  font-weight: bold;
 }
 
 .comment__data-pp {
@@ -99,12 +111,14 @@
 
 .comment__data-com {
   text-align: left;
+  color: var(--ink-soft);
   word-break: break-word;
   white-space: pre-wrap;
 }
 
 .comment__date {
-  color: rgb(180, 175, 175);
+  color: #b6a396;
+  font-weight: normal;
 }
 
 .comment__btn-close {
@@ -112,48 +126,49 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
-  color: rgb(161, 158, 158);
+  color: #b6a396;
   margin-left: 6px;
 }
 
 .comment__btn-close:hover {
-  color: #f44336;
+  color: var(--point);
 }
 
 .comment__password {
   margin-top: 15px;
-  width: 330px;
+  width: min(330px, 84vw);
   display: flex;
   justify-content: center;
 }
 
 .comment__password input {
-  padding: 10px;
+  padding: 10px 12px;
   margin-right: 5px;
   width: 200px;
-  border-radius: 5px;
-  border: 1px solid gray;
+  border-radius: 999px;
+  border: 1px solid var(--line);
   font-family: 'GangwonEdu';
 }
 
 .comment__password button {
-  width: 50px;
-  border-radius: 5px;
-  border: 1px solid rgb(194, 190, 190);
+  width: 58px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
   font-family: 'GangwonEdu';
 }
 
 .comment__btn-more {
   margin-top: 10px;
-  width: 340px;
-  height: 30px;
+  width: min(340px, 84vw);
+  height: 36px;
   background-color: transparent;
-  border: 1px solid rgb(204, 200, 200);
-  border-radius: 5px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
   font-family: 'GangwonEdu';
-  color: rgb(95, 25, 25);
+  color: var(--ink);
 }
 
 .comment__btn-more:hover {
-  background-color: rgb(204, 200, 200);
+  background-color: var(--paper-soft);
 }

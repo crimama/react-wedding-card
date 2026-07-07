@@ -1,41 +1,48 @@
 .account {
-  background-color: #fffdfd;
+  background-color: var(--paper);
 }
 
-.account__title {
-  margin-top: 10px;
-  font-size: xx-large;
+.account__title::before {
+  content: 'GIFT';
+  display: block;
+  margin-bottom: 8px;
+  font-family: 'GangwonEdu', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.28em;
+  color: var(--point);
 }
 
 .account__description {
-  margin: 14px 0 24px;
-  line-height: 1.7;
-  font-size: large;
-  color: rgb(95, 25, 25);
+  margin: 0 0 26px;
+  line-height: 1.75;
+  font-size: 17px;
+  color: var(--ink-soft);
 }
 
 .account__groups {
-  width: min(360px, 88%);
+  width: min(360px, 88vw);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .account__group {
-  border: 1px solid rgb(247, 186, 186);
-  border-radius: 12px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
   overflow: hidden;
-  background-color: #fff;
-  box-shadow: 0 6px 18px rgba(122, 63, 63, 0.08);
+  background-color: var(--paper-soft);
+  box-shadow: none;
 }
 
 .account__group-title {
-  padding: 12px 16px;
-  background-color: rgb(252, 232, 235);
-  font-size: large;
+  padding: 13px 16px;
+  background-color: #fff;
+  border-bottom: 1px solid var(--line);
+  font-size: 17px;
   font-weight: bold;
-  color: rgb(95, 25, 25);
+  color: var(--point);
+  letter-spacing: 0.08em;
 }
 
 .account__row {
@@ -44,7 +51,11 @@
   align-items: center;
   gap: 14px;
   padding: 14px 16px;
-  border-top: 1px solid rgb(247, 222, 222);
+  border-top: 1px solid rgba(223, 207, 195, 0.55);
+}
+
+.account__row:first-of-type {
+  border-top: 0;
 }
 
 .account__person {
@@ -55,19 +66,21 @@
 }
 
 .account__role {
-  font-size: medium;
-  color: rgb(130, 82, 82);
+  font-size: 15px;
+  color: var(--ink-soft);
 }
 
 .account__name {
-  font-size: x-large;
-  font-weight: bold;
-  color: rgb(95, 25, 25);
+  font-family: 'BookkMyungjo-Bd', serif;
+  font-size: 21px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: 0.08em;
 }
 
 .account__empty {
   flex: 1;
   min-width: 96px;
   height: 1.6em;
-  border-bottom: 1px dashed rgb(210, 150, 150);
+  border-bottom: 1px dashed #cbb8a9;
 }

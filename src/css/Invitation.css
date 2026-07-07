@@ -1,17 +1,22 @@
-.invitation__title {
-  margin-top: 10px;
-  margin-bottom: 20px;
-  font-size: xx-large;
+.invitation__title::before {
+  content: 'INVITATION';
+  display: block;
+  margin-bottom: 8px;
+  font-family: 'GangwonEdu', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.28em;
+  color: var(--point);
 }
 
 .invitation__content {
-  line-height: 1.9;
-  font-size: x-large;
+  line-height: 2.05;
+  font-size: 20px;
+  color: var(--ink);
 }
 
 .invitation__couple {
   margin-top: 28px;
-  font-size: x-large;
+  font-size: 22px;
   font-weight: bold;
 }
 
@@ -20,27 +25,34 @@
 }
 
 .invitation__family {
-  margin: 28px 0 0;
-  line-height: 1.9;
-  font-size: x-large;
+  margin: 34px 0 0;
+  padding-top: 28px;
+  width: min(330px, 88vw);
+  border-top: 1px solid var(--line);
+  line-height: 2.05;
+  font-size: 20px;
+  color: var(--ink-soft);
 }
 
 .invitation__parents {
-  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.08em;
 }
 
 .invitation__child {
-  font-weight: bold;
-  letter-spacing: 0.08em;
+  font-family: 'BookkMyungjo-Bd', serif;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--ink);
 }
 
 .invitation__btn-contact {
   cursor: pointer;
-  background-color: rgb(246, 210, 216);
-  border: 1px solid rgb(246, 210, 216);
-  border-radius: 5px;
+  background-color: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
   padding: 8px 20px;
   font-size: large;
   font-family: 'GangwonEdu';
-  color: rgb(95, 25, 25);
+  color: var(--ink);
 }
