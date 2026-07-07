@@ -2,93 +2,44 @@
   font-size: 19px;
 }
 
-.calendar h3 {
-  margin: 0 0 16px;
-  font-family: 'BookkMyungjo', serif;
-  font-size: 22px;
+.save-date {
+  padding-top: 62px;
+  padding-bottom: 62px;
+}
+
+.calendar__title {
+  position: relative;
+  margin: 0 0 20px;
+  font-family: 'BookkMyungjo-Bd', serif;
+  font-size: 23px;
   font-weight: 400;
-  letter-spacing: 0.04em;
-}
-
-.calendar__line {
-  width: min(330px, 84vw);
-  height: 1px;
-  background-color: var(--line);
-}
-
-.calendar__body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: min(330px, 88vw);
-  margin: 0 auto;
-}
-
-.calendar__weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  width: 100%;
-  margin-top: 24px;
-  margin-bottom: 12px;
-  color: var(--point);
-  font-size: 16px;
-}
-
-.calendar__weekdays span {
-  font-weight: bold;
-}
-
-.calendar__days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
-  width: 100%;
-}
-
-.calendar__day {
-  padding: 8px 0;
-  text-align: center;
-  position: relative;
-}
-
-.calendar__day.heart {
-  position: relative;
-  font-weight: bold;
+  line-height: 1;
+  letter-spacing: 0.02em;
   color: var(--ink);
+  font-variant: small-caps;
 }
 
-.calendar__day.heart::after {
+.calendar__title::after {
   content: '';
-  width: 30px;
-  height: 30px;
-  border: 1px solid var(--point);
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: block;
+  width: 28px;
+  height: 1px;
+  margin: 16px auto 0;
+  background: var(--point);
 }
 
-.red,
-.blue {
+.calendar__details {
+  width: min(360px, 88vw);
+  margin: 0 auto;
+  font-size: 18px;
+  line-height: 1.7;
   color: var(--ink-soft);
 }
 
-.calendar__remain {
-  width: min(310px, 82vw);
-  margin: 28px 0 0;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 20px 15px;
-  background: var(--paper-soft);
-  line-height: 1.7;
-}
-
-.calendar__remain span {
-  margin-right: 8px;
-}
-
-.calendar__remain-day {
-  color: var(--point);
-  font-weight: bold;
+.calendar__date-line {
+  font-family: 'GangwonEdu_OTFBoldA', 'GangwonEdu', sans-serif;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  color: var(--ink);
 }
