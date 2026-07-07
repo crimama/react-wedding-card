@@ -2,6 +2,7 @@ import React from 'react'
 import naverMapIcon from '../images/nmap-icon.png';
 import kakaoNaviIcon from '../images/knavi-icon.png';
 import tmapIcon from '../images/tmap-icon.png';
+import locationMap from '../images/location-map.png';
 
 const LOCATION = '서울대학교 연구공원 웨딩홀';
 const LOCATION_ADDRESS = '서울시 관악구 관악로 1, 연구공원 본관 1층';
@@ -52,20 +53,20 @@ function Location() {
         <div className='location__address'>{LOCATION_ADDRESS}</div>
       </div>
 
-      <iframe
+      <img
         className='location__map'
-        title='서울대학교 연구공원 웨딩홀 지도'
-        src={`https://www.openstreetmap.org/export/embed.html?bbox=${LNG - 0.006}%2C${LAT - 0.004}%2C${LNG + 0.006}%2C${LAT + 0.004}&layer=mapnik&marker=${LAT}%2C${LNG}`}
+        src={locationMap}
+        alt='서울대학교 연구공원 웨딩홀 약도'
       />
 
       <div className='location__map-icon-box'>
         <button type='button' className='location__map-item' onClick={openNaverMap}>
           <img src={naverMapIcon} className='location__map-icon' alt='naver map'/>
-          <span>네이버 지도</span>
+          <span>네이버지도</span>
         </button>
         <button type='button' className='location__map-item' onClick={openKakaoMap}>
           <img src={kakaoNaviIcon} className='location__map-icon' alt='kakao map'/>
-          <span>카카오 지도</span>
+          <span>카카오지도</span>
         </button>
         <button type='button' className='location__map-item' onClick={openTmap}>
           <img src={tmapIcon} className='location__map-icon' alt='tmap'/>
