@@ -77,8 +77,8 @@ function Location() {
       <div className='location__info'>
         <div className='location__section-title'>대중교통</div>
         <div className='location__content'>
-          지하철 2호선 <b>낙성대역 4번 출구</b><br />
-          → 마을버스 <b>관악02-1</b> 승차
+          지하철 2호선 <b><span className='location__highlight'>낙성대역</span> 4번 출구</b><br />
+          → 마을버스 <b><span className='location__highlight'>관악02-1</span> 또는 <span className='location__highlight'>관악02-2</span></b> 승차
         </div>
 
         <div className='location__section-title'>주차</div>
