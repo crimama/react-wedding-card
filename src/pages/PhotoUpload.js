@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react'
 
 const PHOTO_UPLOAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwXjruiVY1yfJkvXMAkwtrytSw2_nk8EGTUufAC5lGkLrXpxxTW8GJ9xCIHzLyVPS4jtA/exec'
-const MAX_FILES = 5
-const MAX_FILE_BYTES = 10 * 1024 * 1024
+const MAX_FILES = 10
+const MAX_FILE_BYTES = 20 * 1024 * 1024
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/gif']
 
 function readFileAsBase64(file) {
@@ -55,7 +55,7 @@ function PhotoUpload() {
 
     const oversizedFile = selectedFiles.find((file) => file.size > MAX_FILE_BYTES)
     if (oversizedFile) {
-      alert('사진은 장당 10MB 이하만 업로드할 수 있습니다.')
+      alert('사진은 장당 20MB 이하만 업로드할 수 있습니다.')
       event.target.value = ''
       return
     }
@@ -80,33 +80,40 @@ function PhotoUpload() {
     setUploading(true)
     setStatus('사진을 업로드하는 중입니다. 창을 닫지 말아주세요.')
 
+    const uploadForm = event.currentTarget
+    const trimmedName = uploaderName.trim() || '하객'
+    const trimmedMemo = memo.trim()
+
     try {
-      const encodedFiles = await Promise.all(
-        files.map(async (file) => ({
+      for (let index = 0; index < files.length; index += 1) {
+        const file = files[index]
+        setStatus(`${index + 1}/${files.length}번째 사진을 업로드하는 중입니다. 창을 닫지 말아주세요.`)
+
+        const encodedFile = {
           name: file.name,
           mimeType: file.type,
           data: await readFileAsBase64(file),
-        })),
-      )
+        }
 
-      const payload = {
-        name: uploaderName.trim() || '하객',
-        memo: memo.trim(),
-        files: encodedFiles,
+        const payload = {
+          name: trimmedName,
+          memo: trimmedMemo,
+          files: [encodedFile],
+        }
+
+        const body = new URLSearchParams({ payload: JSON.stringify(payload) })
+
+        await fetch(PHOTO_UPLOAD_ENDPOINT, {
+          method: 'POST',
+          mode: 'no-cors',
+          body,
+        })
       }
-
-      const body = new URLSearchParams({ payload: JSON.stringify(payload) })
-
-      await fetch(PHOTO_UPLOAD_ENDPOINT, {
-        method: 'POST',
-        mode: 'no-cors',
-        body,
-      })
 
       setUploaderName('')
       setMemo('')
       setFiles([])
-      event.target.reset()
+      uploadForm.reset()
       setStatus('사진 업로드 요청이 완료되었습니다. 소중한 사진 고맙습니다.')
     } catch (error) {
       console.error('Error uploading guest photos:', error)
@@ -163,7 +170,7 @@ function PhotoUpload() {
           </div>
         )}
 
-        <div className='photo-upload__notice'>한 번에 최대 5장, 장당 10MB 이하의 이미지만 업로드할 수 있습니다.</div>
+        <div className='photo-upload__notice'>한 번에 최대 10장, 장당 20MB 이하의 이미지만 업로드할 수 있습니다.</div>
         <button className='photo-upload__button' type='submit' disabled={uploading}>
           {uploading ? '업로드 중...' : '사진 업로드하기'}
         </button>
