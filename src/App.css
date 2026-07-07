@@ -1,33 +1,82 @@
-.App {
-  text-align: center;
-  
+:root {
+  --paper: #fffdf8;
+  --paper-soft: #f8f2e9;
+  --paper-warm: #f1e7dc;
+  --ink: #5f4a43;
+  --ink-soft: #8b746a;
+  --point: #c89491;
+  --point-soft: #ead0cc;
+  --line: #dfcfc3;
+  --shadow: 0 18px 45px rgba(80, 62, 50, 0.13);
 }
 
-.title {
-  font-size: xx-large;
+.App {
+  width: min(430px, 100%);
+  min-height: 100vh;
+  margin: 0 auto;
+  text-align: center;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.title,
+.invitation__title,
+.account__title {
+  position: relative;
+  margin: 0 0 24px;
+  font-family: 'BookkMyungjo', serif;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  color: var(--ink);
+}
+
+.title::after,
+.invitation__title::after,
+.account__title::after {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  margin: 14px auto 0;
+  background: var(--point);
 }
 
 .container {
+  box-sizing: border-box;
+  width: 100%;
   margin: 0;
-  padding: 35px 0;
+  padding: 72px 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: var(--paper);
+}
+
+.container + .container {
+  border-top: 1px solid rgba(223, 207, 195, 0.75);
 }
 
 .flower {
-  width: 150px;
+  width: 76px;
+  margin-bottom: 18px;
+  opacity: 0.38;
+  filter: sepia(0.22) saturate(0.72);
 }
 
 button {
   cursor: pointer;
 }
 
-.bc-white {
-  background-color: white;
+.bc-white,
+.bc-pink {
+  background-color: var(--paper);
 }
 
-.bc-pink {
-  background-color: #fdf7f7;;
+@media screen and (max-width: 430px) {
+  .App {
+    box-shadow: none;
+  }
 }
