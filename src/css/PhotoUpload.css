@@ -1,0 +1,159 @@
+.photo-upload {
+  color: var(--ink);
+}
+
+.photo-upload__eyebrow {
+  margin-bottom: 10px;
+  color: var(--point);
+  font-family: 'BookkMyungjo', serif;
+  font-size: 14px;
+  letter-spacing: 0.22em;
+}
+
+.photo-upload__title {
+  margin-bottom: 18px;
+  font-family: 'BookkMyungjo', serif;
+  font-size: 28px;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.photo-upload__title::after {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  margin: 14px auto 0;
+  background: var(--point);
+}
+
+.photo-upload__guide {
+  width: min(360px, 88vw);
+  margin-bottom: 26px;
+  color: var(--ink-soft);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.photo-upload__form {
+  width: min(380px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.photo-upload__input,
+.photo-upload__memo {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 253, 248, 0.96);
+  color: var(--ink);
+  font-family: 'GangwonEdu';
+  font-size: 17px;
+}
+
+.photo-upload__input {
+  height: 46px;
+  padding: 0 14px;
+}
+
+.photo-upload__memo {
+  height: 92px;
+  padding: 13px 14px;
+  line-height: 1.45;
+  resize: none;
+}
+
+.photo-upload__file-label {
+  box-sizing: border-box;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  background: var(--paper-soft);
+  color: var(--ink);
+  font-family: 'GangwonEdu_OTFBoldA', 'GangwonEdu', sans-serif;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.photo-upload__file-label:hover {
+  border-color: var(--point);
+  color: var(--point);
+}
+
+.photo-upload__file-label input {
+  display: none;
+}
+
+.photo-upload__file-list {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.photo-upload__file {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.photo-upload__file span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.photo-upload__total {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(223, 207, 195, 0.65);
+  text-align: right;
+  color: var(--ink);
+}
+
+.photo-upload__notice {
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.photo-upload__button {
+  height: 56px;
+  margin-top: 8px;
+  border: 1px solid var(--point);
+  border-radius: 10px;
+  background: var(--point);
+  color: #fff;
+  font-family: 'GangwonEdu_OTFBoldA', 'GangwonEdu', sans-serif;
+  font-size: 19px;
+}
+
+.photo-upload__button:hover:not(:disabled) {
+  background: #ad7d79;
+  border-color: #ad7d79;
+}
+
+.photo-upload__button:disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
+.photo-upload__status {
+  margin-top: 4px;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 1.5;
+}
