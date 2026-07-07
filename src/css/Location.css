@@ -105,6 +105,11 @@
   color: var(--ink);
 }
 
+.location__highlight {
+  color: #c43d36;
+  font-weight: 700;
+}
+
 .location__notice {
   margin-top: 16px;
   padding: 14px;
