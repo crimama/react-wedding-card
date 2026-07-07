@@ -43,3 +43,25 @@
   white-space: nowrap;
   color: var(--ink);
 }
+
+.calendar__google-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+  padding: 10px 22px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper-soft);
+  color: var(--ink);
+  font-family: 'GangwonEdu_OTFBoldA', 'GangwonEdu', sans-serif;
+  font-size: 17px;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.calendar__google-btn:hover {
+  background: #fff;
+  color: var(--point);
+}
