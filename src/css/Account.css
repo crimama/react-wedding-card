@@ -12,37 +12,59 @@
   color: var(--point);
 }
 
-.account__description {
-  margin: 0 0 26px;
-  line-height: 1.75;
-  font-size: 17px;
-  color: var(--ink-soft);
-}
-
 .account__groups {
-  width: min(360px, 88vw);
+  width: min(340px, 86vw);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .account__group {
-  border: 1px solid var(--line);
-  border-radius: 16px;
   overflow: hidden;
-  background-color: var(--paper-soft);
-  box-shadow: none;
+  border: 1px solid rgba(223, 207, 195, 0.92);
+  border-radius: 15px;
+  background-color: #fffaf5;
+  box-shadow: 0 10px 24px rgba(96, 72, 62, 0.06);
 }
 
-.account__group-title {
-  padding: 13px 16px;
-  background-color: #fff;
-  border-bottom: 1px solid var(--line);
-  font-size: 17px;
-  font-weight: bold;
+.account__group-toggle {
+  position: relative;
+  width: 100%;
+  min-height: 54px;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: #fffdf9;
+  color: var(--ink);
+  font-family: 'BookkMyungjo-Bd', serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+}
+
+.account__chevron {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--point);
-  letter-spacing: 0.08em;
+  font-family: 'GangwonEdu', sans-serif;
+  font-size: 20px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.account__group--open .account__chevron {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.account__panel {
+  padding: 4px 0;
+  border-top: 1px solid rgba(223, 207, 195, 0.72);
+  background: var(--paper-soft);
 }
 
 .account__row {
@@ -50,11 +72,11 @@
   justify-content: space-between;
   align-items: center;
   gap: 14px;
-  padding: 14px 16px;
+  padding: 13px 16px;
   border-top: 1px solid rgba(223, 207, 195, 0.55);
 }
 
-.account__row:first-of-type {
+.account__row:first-child {
   border-top: 0;
 }
 
@@ -66,21 +88,27 @@
 }
 
 .account__role {
-  font-size: 15px;
+  min-width: 44px;
+  font-size: 14px;
   color: var(--ink-soft);
 }
 
 .account__name {
   font-family: 'BookkMyungjo-Bd', serif;
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 400;
   color: var(--ink);
   letter-spacing: 0.08em;
 }
 
-.account__empty {
-  flex: 1;
-  min-width: 96px;
-  height: 1.6em;
-  border-bottom: 1px dashed #cbb8a9;
+.account__pending {
+  flex: 0 0 auto;
+  padding: 5px 11px 4px;
+  border: 1px solid var(--point-soft);
+  border-radius: 999px;
+  background: #fffdf9;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.02em;
 }
