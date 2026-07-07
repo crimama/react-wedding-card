@@ -31,10 +31,10 @@
   background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0) 52%,
-    rgba(255, 255, 255, 0.28) 62%,
-    rgba(255, 255, 255, 0.82) 72%,
-    rgba(255, 255, 255, 0.98) 82%,
+    rgba(255, 255, 255, 0) 58%,
+    rgba(255, 255, 255, 0.24) 67%,
+    rgba(255, 255, 255, 0.78) 77%,
+    rgba(255, 255, 255, 0.97) 87%,
     #fff 100%
   );
 }
@@ -54,7 +54,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: clamp(46px, 7.2svh, 70px);
+  bottom: clamp(34px, 5.2svh, 50px);
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -66,28 +66,28 @@
 
 .cover__date-mark {
   display: inline-block;
-  padding: 0 2px 10px;
+  padding: 0 2px 8px;
   border-bottom: 1px solid #3f3f3f;
   font-family: inherit;
-  font-size: clamp(46px, 12.6vw, 55px);
+  font-size: clamp(38px, 10.6vw, 46px);
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: 0.065em;
 }
 
 .cover__time {
-  margin-top: 18px;
+  margin-top: 14px;
   font-family: inherit;
-  font-size: clamp(22px, 5.8vw, 27px);
+  font-size: clamp(19px, 5vw, 23px);
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: 0.045em;
 }
 
 .cover__place {
-  margin-top: 26px;
+  margin-top: 18px;
   font-family: inherit;
-  font-size: clamp(18px, 4.8vw, 22px);
+  font-size: clamp(16px, 4.2vw, 19px);
   font-weight: 400;
   line-height: 1.25;
   letter-spacing: -0.01em;
@@ -95,13 +95,13 @@
 }
 
 .cover__person {
-  width: min(250px, 66%);
-  margin-top: 26px;
+  width: min(220px, 58%);
+  margin-top: 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: inherit;
-  font-size: clamp(25px, 6.7vw, 31px);
+  font-size: clamp(22px, 5.8vw, 27px);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: 0.035em;
@@ -114,25 +114,25 @@
   }
 
   .cover__content {
-    bottom: 32px;
+    bottom: 28px;
   }
 
   .cover__date-mark {
-    font-size: 43px;
+    font-size: 36px;
   }
 
   .cover__time {
-    margin-top: 14px;
-    font-size: 21px;
-  }
-
-  .cover__place {
-    margin-top: 20px;
+    margin-top: 12px;
     font-size: 18px;
   }
 
+  .cover__place {
+    margin-top: 16px;
+    font-size: 15px;
+  }
+
   .cover__person {
-    margin-top: 20px;
-    font-size: 24px;
+    margin-top: 16px;
+    font-size: 21px;
   }
 }
