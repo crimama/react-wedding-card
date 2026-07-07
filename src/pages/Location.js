@@ -76,19 +76,14 @@ function Location() {
       <div className='location__info'>
         <div className='location__section-title'>대중교통</div>
         <div className='location__content'>
-          <b>대중교통 이용 시</b><br />
-          지하철 2호선 <b>낙성대역 4번 출구</b>에서 나온 뒤 첫 번째 골목에서 좌회전<br />
-          → 마을버스 <b>관악 02번</b> 승차<br />
-          → <b>서울대후문·연구공원 정류장</b> 하차<br />
-          → 길 건너 간판 참고해 도보 100m 이동<br />
-          검은색 피라미드 유리 건물입니다.
+          지하철 2호선 <b>낙성대역 4번 출구</b><br />
+          → 마을버스 <b>관악02-1</b> 승차
         </div>
 
-        <div className='location__section-title'>자가용</div>
+        <div className='location__section-title'>주차</div>
         <div className='location__content'>
-          네이버 지도, 카카오 내비, 티맵 등에서<br />
-          <b>서울대학교 연구공원 웨딩홀</b> 검색<br />
-          주차 요금은 무료입니다. 주차장 이용 시 웨딩홀과 바로 연결됩니다.
+          주차요금 <b>무료(2시간)</b><br />
+          주차장 이용시 웨딩홀과 바로 연결
         </div>
         <div className='location__notice'>
           ※ 서울대학교 정문/후문을 통과할 경우 통행료가 발생하므로 낙성대 방향으로 이용해주세요.

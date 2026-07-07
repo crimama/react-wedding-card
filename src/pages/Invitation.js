@@ -7,16 +7,16 @@ function Invitation() {
       <img src={flower} className='flower' alt='flower'/>
       <div className='invitation__title'>초대합니다</div>
       <div className='invitation__content'>
-        <div>서로의 곁에서 가장 편안한 사람이 되어</div>
-        <div>이제 한 가정을 이루려 합니다.</div>
-        <div>소중한 분들을 모시고</div>
-        <div>저희의 새로운 시작을 약속하려 하오니</div>
-        <div>귀한 걸음으로 함께 축복해주시면</div>
-        <div>더없는 기쁨으로 간직하겠습니다.</div>
+        <div>각자의 트랙을 달리던 저희 두 사람이 만나</div>
+        <div>서로의 발걸음을 맞추는 완벽한 짝이 되었습니다.</div>
+        <div>힘들 땐 서로의 페이스메이커가 되어주며</div>
+        <div>삶이라는 인생 마라톤을 함께 완주해 나가겠습니다.</div>
+        <div>부부라는 이름으로 서는 첫 번째 출발선,</div>
+        <div>귀한 걸음으로 오셔서 힘차게 축복해주세요.</div>
       </div>
       <div className='invitation__family'>
         <div>
-          <span className='invitation__parents'>임혁 • 서정하</span>
+          <span className='invitation__parents'>임혁 · 서정하</span>
           <span>의 차남 </span>
           <span className='invitation__child'>임 훈</span>
         </div>
