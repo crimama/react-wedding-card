@@ -19,9 +19,14 @@ const MAX_MESSAGE_LENGTH = 500
 
 function formatDate(timestamp) {
   const date = timestamp?.toDate ? timestamp.toDate() : new Date()
+  const year = date.getFullYear()
   const month = `${date.getMonth() + 1}`.padStart(2, '0')
   const day = `${date.getDate()}`.padStart(2, '0')
-  return `${month}월 ${day}일`
+  const minutes = `${date.getMinutes()}`.padStart(2, '0')
+  const meridiem = date.getHours() < 12 ? 'am' : 'pm'
+  const hours = date.getHours() % 12 || 12
+
+  return `${year}.${month}.${day} ${hours}:${minutes}${meridiem}`
 }
 
 function Comment() {
@@ -35,6 +40,7 @@ function Comment() {
   const [deletePassword, setDeletePassword] = useState('')
   const [visibleComments, setVisibleComments] = useState(5)
   const [isExpanded, setIsExpanded] = useState(false)
+  const [isWritingOpen, setIsWritingOpen] = useState(false)
 
   const fetchComments = async () => {
     setLoading(true)
@@ -66,7 +72,15 @@ function Comment() {
     setMessage('')
   }
 
-  const onCommentSubmit = async () => {
+  const closeWriter = () => {
+    if (submitting) return
+    setIsWritingOpen(false)
+    resetForm()
+  }
+
+  const onCommentSubmit = async (event) => {
+    event.preventDefault()
+
     const trimmedName = name.trim()
     const trimmedMessage = message.trim()
 
@@ -90,6 +104,7 @@ function Comment() {
         createdAt: serverTimestamp(),
       })
       resetForm()
+      setIsWritingOpen(false)
       await fetchComments()
       alert('방명록이 등록되었습니다.')
     } catch (error) {
@@ -140,38 +155,8 @@ function Comment() {
   }
 
   return (
-    <div className='bc-pink container'>
-      <div className='title'>방명록</div>
-      <div className='comment__guide'>소중한 축하 메시지를 남겨주세요.</div>
-      <div className='commment_content'>
-        <div>
-          <input
-            type='text'
-            value={name}
-            placeholder='이름'
-            onChange={(e) => setName(e.target.value)}
-            maxLength={MAX_NAME_LENGTH}
-          />
-          <input
-            type='password'
-            value={password}
-            placeholder='비밀번호'
-            onChange={(e) => setPassword(e.target.value)}
-            maxLength={MAX_PASSWORD_LENGTH}
-          />
-        </div>
-        <textarea
-          className='comment__message'
-          value={message}
-          placeholder='축하메시지'
-          onChange={(e) => setMessage(e.target.value)}
-          maxLength={MAX_MESSAGE_LENGTH}
-        />
-        <div className='comment__count'>{message.length}/{MAX_MESSAGE_LENGTH}</div>
-        <button className='comment__btn' onClick={onCommentSubmit} disabled={submitting}>
-          {submitting ? '작성 중...' : '메시지 작성하기'}
-        </button>
-      </div>
+    <div className='bc-pink container comment'>
+      <div className='title comment__title'>방명록</div>
 
       <div className='comment__container-data'>
         {loading ? (
@@ -181,20 +166,18 @@ function Comment() {
         ) : (
           comments.slice(0, visibleComments).map((comment) => (
             <div className='comment__data' key={comment.id}>
-              <div className='comment__data-p'>
-                <div>{comment.name}</div>
-                <div className='comment__data-pp'>
-                  <div className='comment__date'>{comment.date}</div>
-                  <button
-                    className='comment__btn-close'
-                    onClick={() => requestDelete(comment.id)}
-                    aria-label='메시지 삭제'
-                  >
-                    &times;
-                  </button>
-                </div>
+              <div className='comment__data-head'>
+                <div className='comment__from'>From.{comment.name}</div>
+                <button
+                  type='button'
+                  className='comment__delete-link'
+                  onClick={() => requestDelete(comment.id)}
+                >
+                  삭제
+                </button>
               </div>
               <div className='comment__data-com'>{comment.message}</div>
+              <div className='comment__date'>{comment.date}</div>
               {showPasswordFor === comment.id && (
                 <div className='comment__password'>
                   <input
@@ -203,18 +186,73 @@ function Comment() {
                     value={deletePassword}
                     onChange={(e) => setDeletePassword(e.target.value)}
                   />
-                  <button onClick={() => deleteComment(comment)}>삭제</button>
+                  <button type='button' onClick={() => deleteComment(comment)}>삭제</button>
                 </div>
               )}
             </div>
           ))
         )}
-        {comments.length > 5 && (
-          <button onClick={toggleCommentsVisibility} className='comment__btn-more'>
-            {isExpanded ? '닫기' : '더보기'}
-          </button>
-        )}
       </div>
+
+      {comments.length > 5 && (
+        <button type='button' onClick={toggleCommentsVisibility} className='comment__btn-more'>
+          {isExpanded ? '닫기' : '더보기'}
+        </button>
+      )}
+
+      <button type='button' className='comment__btn comment__btn-open' onClick={() => setIsWritingOpen(true)}>
+        방명록 작성하기
+      </button>
+
+      {isWritingOpen && (
+        <div className='comment__modal-backdrop' onClick={closeWriter}>
+          <form className='comment__modal' onSubmit={onCommentSubmit} onClick={(event) => event.stopPropagation()}>
+            <div className='comment__modal-head'>
+              <div>
+                <div className='comment__modal-title'>방명록 작성하기</div>
+                <div className='comment__modal-guide'>축하 메시지를 남겨주세요.</div>
+              </div>
+              <button
+                type='button'
+                className='comment__modal-close'
+                onClick={closeWriter}
+                aria-label='작성 창 닫기'
+              >
+                &times;
+              </button>
+            </div>
+            <div className='commment_content'>
+              <div>
+                <input
+                  type='text'
+                  value={name}
+                  placeholder='이름'
+                  onChange={(e) => setName(e.target.value)}
+                  maxLength={MAX_NAME_LENGTH}
+                />
+                <input
+                  type='password'
+                  value={password}
+                  placeholder='비밀번호'
+                  onChange={(e) => setPassword(e.target.value)}
+                  maxLength={MAX_PASSWORD_LENGTH}
+                />
+              </div>
+              <textarea
+                className='comment__message'
+                value={message}
+                placeholder='축하메시지'
+                onChange={(e) => setMessage(e.target.value)}
+                maxLength={MAX_MESSAGE_LENGTH}
+              />
+              <div className='comment__count'>{message.length}/{MAX_MESSAGE_LENGTH}</div>
+              <button className='comment__btn comment__btn-submit' type='submit' disabled={submitting}>
+                {submitting ? '작성 중...' : '메시지 작성하기'}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   )
 }
