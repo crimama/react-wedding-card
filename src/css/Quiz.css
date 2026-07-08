@@ -22,7 +22,7 @@
     padding: 10px;
     margin: 10px auto;
     font-size: large;
-    font-family: 'GangwonEdu';
+    font-family: 'GmarketSansLight';
     cursor: pointer;
     border: 2px solid transparent; /* Default no border color */
     border-radius: 5px;
@@ -58,7 +58,7 @@
     margin-top: 20px;
     color: white;
     font-size: large;
-    font-family: 'GangwonEdu';
+    font-family: 'GmarketSansLight';
     cursor: pointer;
     background-color: palevioletred; /* Green background for visibility */
     border: 1px solid transparent;

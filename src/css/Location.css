@@ -5,7 +5,7 @@
 }
 
 .location__name {
-  font-family: 'BookkMyungjo-Bd', serif;
+  font-family: 'GmarketSansMedium', sans-serif;
   font-weight: 400;
   letter-spacing: 0.04em;
 }
@@ -55,7 +55,7 @@
   border-radius: 999px;
   background: transparent;
   color: var(--ink);
-  font-family: 'GangwonEdu';
+  font-family: 'GmarketSansLight';
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,7 +86,7 @@
 .location__section-title {
   margin-top: 18px;
   margin-bottom: 8px;
-  font-family: 'BookkMyungjo-Bd', serif;
+  font-family: 'GmarketSansMedium', sans-serif;
   font-size: 20px;
   font-weight: 400;
   color: var(--ink);

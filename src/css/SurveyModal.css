@@ -1,5 +1,5 @@
 .survey {
-    font-family:'GangwonEdu';
+    font-family:'GmarketSansLight';
     font-size: large;
     font-weight: bold;
     position: fixed;
@@ -24,7 +24,7 @@
 }
 
 .survey__btn-side {
-    font-family:'GangwonEdu';
+    font-family:'GmarketSansLight';
     font-size: large;
     width: 100px;
     height: 45px;
@@ -67,14 +67,14 @@
 }
 
 .survey__input input {
-    font-family: 'GangwonEdu';
+    font-family: 'GmarketSansLight';
     width: 175px;
     padding: 10px;
     font-size: large;
 }
 
 .survey__input select {
-    font-family:'GangwonEdu';
+    font-family:'GmarketSansLight';
     width: 198px;
     padding: 10px;
     font-size: large;
@@ -95,7 +95,7 @@
 }
 
 .survey__btn-submit {
-    font-family: 'GangwonEdu';
+    font-family: 'GmarketSansLight';
     background: transparent;
     border: 1px solid rgba(0, 0, 0, 0.321);
     border-radius: 5px;

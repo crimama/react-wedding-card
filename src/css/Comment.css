@@ -16,7 +16,7 @@
 .comment__title {
   margin-bottom: 50px;
   color: var(--ink);
-  font-family: 'BookkMyungjo', serif;
+  font-family: 'GmarketSansLight', sans-serif;
   font-size: 34px;
   letter-spacing: 0.18em;
 }
@@ -77,7 +77,7 @@
   border: none;
   background: transparent;
   color: var(--comment-muted);
-  font-family: 'GangwonEdu';
+  font-family: 'GmarketSansLight';
   font-size: 20px;
 }
 
@@ -115,7 +115,7 @@
   padding: 11px 12px;
   border: 1px solid var(--comment-border);
   border-radius: 8px;
-  font-family: 'GangwonEdu';
+  font-family: 'GmarketSansLight';
   font-size: 16px;
 }
 
@@ -125,7 +125,7 @@
   border-radius: 8px;
   background: #fff;
   color: var(--comment-text);
-  font-family: 'GangwonEdu';
+  font-family: 'GmarketSansLight';
   font-size: 16px;
 }
 
@@ -134,7 +134,7 @@
   box-sizing: border-box;
   width: min(380px, 100%);
   border-radius: 8px;
-  font-family: 'GangwonEdu';
+  font-family: 'GmarketSansLight';
 }
 
 .comment__btn {
@@ -244,7 +244,7 @@
   border-radius: 8px;
   background: #fff;
   color: var(--comment-text);
-  font-family: 'GangwonEdu';
+  font-family: 'GmarketSansLight';
   font-size: 16px;
 }
 
@@ -258,7 +258,7 @@
   border-radius: 8px;
   background: #fff;
   color: var(--comment-text);
-  font-family: 'GangwonEdu';
+  font-family: 'GmarketSansLight';
   font-size: 17px;
   line-height: 1.45;
 }

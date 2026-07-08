@@ -5,14 +5,14 @@
 .photo-upload__eyebrow {
   margin-bottom: 10px;
   color: var(--point);
-  font-family: 'BookkMyungjo', serif;
+  font-family: 'GmarketSansLight', sans-serif;
   font-size: 14px;
   letter-spacing: 0.22em;
 }
 
 .photo-upload__title {
   margin-bottom: 18px;
-  font-family: 'BookkMyungjo', serif;
+  font-family: 'GmarketSansLight', sans-serif;
   font-size: 28px;
   letter-spacing: 0.08em;
   color: var(--ink);
@@ -51,7 +51,7 @@
   border-radius: 10px;
   background: rgba(255, 253, 248, 0.96);
   color: var(--ink);
-  font-family: 'GangwonEdu';
+  font-family: 'GmarketSansLight';
   font-size: 17px;
 }
 
@@ -77,7 +77,7 @@
   border-radius: 10px;
   background: var(--paper-soft);
   color: var(--ink);
-  font-family: 'GangwonEdu_OTFBoldA', 'GangwonEdu', sans-serif;
+  font-family: 'GmarketSansMedium', sans-serif;
   font-size: 18px;
   cursor: pointer;
 }
@@ -137,7 +137,7 @@
   border-radius: 10px;
   background: var(--point);
   color: #fff;
-  font-family: 'GangwonEdu_OTFBoldA', 'GangwonEdu', sans-serif;
+  font-family: 'GmarketSansMedium', sans-serif;
   font-size: 19px;
 }
 

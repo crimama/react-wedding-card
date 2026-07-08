@@ -10,7 +10,7 @@
 .calendar__title {
   position: relative;
   margin: 0 0 20px;
-  font-family: 'BookkMyungjo-Bd', serif;
+  font-family: 'GmarketSansMedium', sans-serif;
   font-size: 23px;
   font-weight: 400;
   line-height: 1;
@@ -37,7 +37,7 @@
 }
 
 .calendar__date-line {
-  font-family: 'GangwonEdu_OTFBoldA', 'GangwonEdu', sans-serif;
+  font-family: 'GmarketSansMedium', sans-serif;
   font-size: 18px;
   letter-spacing: -0.03em;
   white-space: nowrap;
@@ -54,7 +54,7 @@
   border-radius: 999px;
   background: var(--paper-soft);
   color: var(--ink);
-  font-family: 'GangwonEdu_OTFBoldA', 'GangwonEdu', sans-serif;
+  font-family: 'GmarketSansMedium', sans-serif;
   font-size: 17px;
   line-height: 1;
   text-decoration: none;

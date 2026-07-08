@@ -66,7 +66,7 @@
     border: none;
     padding: 15px 0;
     font-size: large;
-    font-family:'GangwonEdu';
+    font-family:'GmarketSansLight';
   }
 
  
@@ -77,7 +77,7 @@
 
   .modal__pay-link {
     text-decoration: none;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;
+    font-family:'GmarketSansMedium', sans-serif ;
     font-weight: bold;
     font-size: large;
     background-color: yellow;

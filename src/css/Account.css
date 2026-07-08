@@ -6,7 +6,7 @@
   content: 'GIFT';
   display: block;
   margin-bottom: 8px;
-  font-family: 'GangwonEdu', sans-serif;
+  font-family: 'GmarketSansLight', sans-serif;
   font-size: 13px;
   letter-spacing: 0.28em;
   color: var(--point);
@@ -39,7 +39,7 @@
   border: 0;
   background: #fffdf9;
   color: var(--ink);
-  font-family: 'BookkMyungjo-Bd', serif;
+  font-family: 'GmarketSansMedium', sans-serif;
   font-size: 18px;
   font-weight: 400;
   letter-spacing: 0.12em;
@@ -51,7 +51,7 @@
   top: 50%;
   transform: translateY(-50%);
   color: var(--point);
-  font-family: 'GangwonEdu', sans-serif;
+  font-family: 'GmarketSansLight', sans-serif;
   font-size: 20px;
   line-height: 1;
   transition: transform 0.2s ease;
@@ -94,7 +94,7 @@
 }
 
 .account__name {
-  font-family: 'BookkMyungjo-Bd', serif;
+  font-family: 'GmarketSansMedium', sans-serif;
   font-size: 20px;
   font-weight: 400;
   color: var(--ink);
