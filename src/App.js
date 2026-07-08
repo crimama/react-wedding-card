@@ -10,6 +10,7 @@ import './css/Footer.css'
 import './css/Account.css'
 import './css/Comment.css'
 import './css/PhotoUpload.css'
+import './css/Admin.css'
 
 import Cover from './pages/Cover.js'
 import Invitation from './pages/Invitation.js';
@@ -20,10 +21,32 @@ import Footer from './components/Footer.js';
 import Account from './pages/Account.js';
 import Comment from './pages/Comment.js';
 import PhotoUpload from './pages/PhotoUpload.js';
+import Admin from './pages/Admin.js';
+import { SiteSettingsProvider, useSiteSettings } from './SiteSettingsContext';
 
-function App() {
+function InvitationApp() {
+  const { settings } = useSiteSettings()
+  const themeStyle = {
+    '--wedding-font-body': settings.style.bodyFont,
+    '--wedding-font-title': settings.style.titleFont,
+    '--wedding-font-cover': settings.style.coverFont,
+    '--wedding-bg': settings.style.backgroundColor,
+    '--wedding-paper': settings.style.paperColor,
+    '--wedding-text': settings.style.textColor,
+    '--wedding-muted': settings.style.mutedTextColor,
+    '--wedding-accent': settings.style.accentColor,
+    '--wedding-highlight': settings.style.highlightColor,
+    '--wedding-button-text': settings.style.buttonTextColor,
+  }
+
+  const isAdminRoute = window.location.pathname.replace(/\/$/, '').endsWith('/admin') || window.location.search.includes('admin')
+
+  if (isAdminRoute) {
+    return <Admin />
+  }
+
   return (
-    <div className="App">
+    <div className="App" style={themeStyle}>
       <Cover />
       <Invitation />
       <Calendar />
@@ -35,6 +58,14 @@ function App() {
       <Footer />
     </div>
   );
+}
+
+function App() {
+  return (
+    <SiteSettingsProvider>
+      <InvitationApp />
+    </SiteSettingsProvider>
+  )
 }
 
 export default App;
