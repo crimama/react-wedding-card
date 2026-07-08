@@ -1,0 +1,301 @@
+.App {
+  background: var(--wedding-bg, #f8f1e9);
+  color: var(--wedding-text, #5f4a3d);
+  font-family: var(--wedding-font-body, 'GmarketSansLight'), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.App .container,
+.App .bc-pink,
+.App .account,
+.App .calendar,
+.App .footer,
+.App .comment,
+.App .photo-upload {
+  background-color: var(--wedding-paper, #fffaf3);
+  color: var(--wedding-text, #5f4a3d);
+}
+
+.App .title,
+.App .invitation__title,
+.App .calendar__title,
+.App .account__title,
+.App .location__name,
+.App .location__section-title,
+.App .account__group-toggle,
+.App .calendar__google-btn,
+.App button,
+.App input,
+.App textarea,
+.App select {
+  font-family: var(--wedding-font-title, 'GmarketSansMedium'), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+.App .invitation__content,
+.App .invitation__family,
+.App .calendar__details,
+.App .location__address,
+.App .location__content,
+.App .location__notice,
+.App .account__row,
+.App .comment__list,
+.App .photo-upload__description,
+.App .footer__text {
+  font-family: var(--wedding-font-body, 'GmarketSansLight'), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  color: var(--wedding-text, #5f4a3d);
+}
+
+.App .cover__content {
+  font-family: var(--wedding-font-cover, 'Gowun Dodum'), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+.App .invitation__parents,
+.App .invitation__child,
+.App .calendar__date-line,
+.App .account__name,
+.App .account__role,
+.App .photo-upload__hint,
+.App .footer__credit {
+  color: var(--wedding-muted, #8d7667) !important;
+}
+
+.App .location__highlight {
+  color: var(--wedding-highlight, #c43d36) !important;
+}
+
+.App .calendar__google-btn,
+.App .photo-upload__button,
+.App .comment__btn-open,
+.App .comment__btn-submit,
+.App .footer__kakao-share {
+  background: var(--wedding-accent, #b8786f) !important;
+  color: var(--wedding-button-text, #ffffff) !important;
+  border-color: var(--wedding-accent, #b8786f) !important;
+}
+
+.App .account__group,
+.App .comment__card,
+.App .photo-upload__box,
+.App .location__info,
+.App .location__map-item {
+  border-color: color-mix(in srgb, var(--wedding-accent, #b8786f) 28%, transparent) !important;
+}
+
+.admin {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 32px 18px 120px;
+  background: #f8f1e9;
+  color: #4e3b30;
+  font-family: 'GmarketSansLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.admin * {
+  box-sizing: border-box;
+}
+
+.admin__header,
+.admin__section,
+.admin__actions,
+.admin__status,
+.admin__notice {
+  width: min(960px, 100%);
+  margin: 0 auto;
+}
+
+.admin__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.admin__eyebrow {
+  margin-bottom: 8px;
+  color: #b8786f;
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.admin h1 {
+  margin: 0 0 10px;
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.admin h2 {
+  margin: 0 0 16px;
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.admin p {
+  margin: 0;
+  line-height: 1.7;
+  color: #7f6b5e;
+}
+
+.admin__view-link,
+.admin__primary-btn,
+.admin__secondary-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 18px;
+  text-decoration: none;
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.admin__view-link,
+.admin__secondary-btn {
+  background: #fffaf3;
+  color: #6a5144;
+  border: 1px solid #eadfd4;
+}
+
+.admin__primary-btn {
+  background: #b8786f;
+  color: #fff;
+}
+
+.admin__primary-btn:disabled,
+.admin__secondary-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.admin__section {
+  margin-top: 18px;
+  padding: 22px;
+  border: 1px solid #eadfd4;
+  border-radius: 24px;
+  background: rgba(255, 250, 243, 0.82);
+  box-shadow: 0 12px 28px rgba(95, 74, 61, 0.06);
+}
+
+.admin__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.admin__field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #6a5144;
+  font-size: 13px;
+}
+
+.admin__field--full {
+  grid-column: 1 / -1;
+}
+
+.admin__field span {
+  font-family: 'GmarketSansMedium', sans-serif;
+}
+
+.admin input,
+.admin textarea,
+.admin select {
+  width: 100%;
+  border: 1px solid #e0d3c7;
+  border-radius: 14px;
+  padding: 12px 13px;
+  background: #fffdf9;
+  color: #4e3b30;
+  font-family: 'GmarketSansLight', sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.admin textarea {
+  resize: vertical;
+}
+
+.admin__color-field {
+  display: grid;
+  grid-template-columns: 1fr 54px minmax(0, 1fr);
+  align-items: end;
+  column-gap: 8px;
+}
+
+.admin__color-field span {
+  grid-column: 1 / -1;
+}
+
+.admin__color-field input[type='color'] {
+  height: 44px;
+  padding: 3px;
+}
+
+.admin__hint {
+  margin: -6px 0 14px !important;
+  font-size: 13px;
+}
+
+.admin__preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px solid;
+  border-radius: 18px;
+}
+
+.admin__actions {
+  position: sticky;
+  bottom: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+  padding: 12px;
+  border: 1px solid #eadfd4;
+  border-radius: 999px;
+  background: rgba(255, 250, 243, 0.92);
+  backdrop-filter: blur(12px);
+}
+
+.admin__status,
+.admin__notice {
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #fffaf3;
+  color: #6a5144;
+  border: 1px solid #eadfd4;
+}
+
+@media (max-width: 720px) {
+  .admin {
+    padding: 24px 12px 100px;
+  }
+
+  .admin__header {
+    flex-direction: column;
+  }
+
+  .admin__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin__color-field {
+    grid-template-columns: 54px minmax(0, 1fr);
+  }
+
+  .admin__actions {
+    justify-content: stretch;
+    border-radius: 24px;
+  }
+
+  .admin__actions button {
+    flex: 1;
+  }
+}
