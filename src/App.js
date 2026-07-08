@@ -39,7 +39,8 @@ function InvitationApp() {
     '--wedding-button-text': settings.style.buttonTextColor,
   }
 
-  const isAdminRoute = window.location.pathname.replace(/\/$/, '').endsWith('/admin') || window.location.search.includes('admin')
+  const searchParams = new URLSearchParams(window.location.search)
+  const isAdminRoute = window.location.pathname.replace(/\/$/, '').endsWith('/admin') || searchParams.has('admin')
 
   if (isAdminRoute) {
     return <Admin />
