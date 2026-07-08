@@ -25,9 +25,9 @@
 .account__title {
   position: relative;
   margin: 0 0 24px;
-  font-family: 'BookkMyungjo', serif;
+  font-family: 'GmarketSansMedium', sans-serif;
   font-size: 28px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.16em;
   color: var(--ink);
 }
@@ -64,6 +64,13 @@
   margin-bottom: 18px;
   opacity: 0.38;
   filter: sepia(0.22) saturate(0.72);
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: 'GmarketSansMedium', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 button {

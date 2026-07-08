@@ -1,7 +1,7 @@
 body {
   margin: 0;
   background: #e9e1d5;
-  font-family: 'GangwonEdu', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'GmarketSansLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #5f4a43;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -12,21 +12,26 @@ code {
 }
 
 @font-face {
-  font-family: 'GangwonEdu_OTFBoldA';
-  src: url('fonts/강원교육모두_Bold.woff') format('woff');
+  font-family: 'GmarketSansLight';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'GangwonEdu';
-  src: url('fonts/강원교육모두_Light.woff') format('woff');
+  font-family: 'GmarketSansMedium';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'BookkMyungjo-Bd';
-  src: url('fonts/부크크명조_굵은글씨.woff') format('woff');
+  font-family: 'GmarketSansBold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
-@font-face {
-  font-family: 'BookkMyungjo';
-  src: url('fonts/부크크명조_얇은글씨.woff') format('woff');
-}
