@@ -3,15 +3,17 @@ import naverMapIcon from '../images/nmap-icon.png';
 import kakaoNaviIcon from '../images/knavi-icon.png';
 import tmapIcon from '../images/tmap-icon.png';
 import locationMap from '../images/location-map.png';
+import { useSiteSettings } from '../SiteSettingsContext'
 
-const LOCATION = '서울대학교 연구공원 웨딩홀';
-const LOCATION_ADDRESS = '서울시 관악구 관악로 1, 연구공원 본관 1층';
 const LAT = 37.4657134;
 const LNG = 126.9594982;
 const NMAP_PLACE_ID = 13321741;
 const KMAP_PLACE_ID = 8634826;
 
 function Location() {
+  const { settings } = useSiteSettings()
+  const { location } = settings
+
   const checkDevice = () => {
     const userAgent = window.navigator.userAgent;
     if (userAgent.match(/(iPhone|iPod|iPad)/)) return 'ios';
@@ -40,17 +42,17 @@ function Location() {
     const params = new URLSearchParams({
       goalx: LNG.toString(),
       goaly: LAT.toString(),
-      goalName: LOCATION,
+      goalName: location.name,
     });
     window.open(`tmap://route?${params.toString()}`, '_self');
   };
 
   return (
     <div className='container'>
-      <div className='title'>오시는 길</div>
+      <div className='title'>{location.title}</div>
       <div className='location__details'>
-        <div className='location__name'>{LOCATION}</div>
-        <div className='location__address'>{LOCATION_ADDRESS}</div>
+        <div className='location__name'>{location.name}</div>
+        <div className='location__address'>{location.address}</div>
       </div>
 
       <img
@@ -75,19 +77,13 @@ function Location() {
       </div>
 
       <div className='location__info'>
-        <div className='location__section-title'>대중교통</div>
-        <div className='location__content'>
-          지하철 2호선 <b><span className='location__highlight'>낙성대역</span> 4번 출구</b><br />
-          → 마을버스 <b><span className='location__highlight'>관악02-1</span> 또는 <span className='location__highlight'>관악02-2</span></b> 승차
-        </div>
+        <div className='location__section-title'>{location.transitTitle}</div>
+        <div className='location__content' dangerouslySetInnerHTML={{ __html: location.transitHtml }} />
 
-        <div className='location__section-title'>주차</div>
-        <div className='location__content'>
-          주차요금 <b>무료(2시간)</b><br />
-          주차장 이용시 웨딩홀과 바로 연결
-        </div>
+        <div className='location__section-title'>{location.parkingTitle}</div>
+        <div className='location__content' dangerouslySetInnerHTML={{ __html: location.parkingHtml }} />
         <div className='location__notice'>
-          ※ 서울대학교 정문/후문을 통과할 경우 통행료가 발생하므로 낙성대 방향으로 이용해주세요.
+          {location.notice}
         </div>
       </div>
     </div>
