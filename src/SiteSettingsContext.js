@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { doc, onSnapshot } from 'firebase/firestore'
-import db from '../firebase-config'
+import db from './firebase-config'
 import defaultSiteConfig from './defaultSiteConfig'
 
 const SETTINGS_DOC_PATH = ['settings', 'main']
