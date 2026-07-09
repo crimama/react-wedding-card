@@ -74,6 +74,7 @@ function SelectField({ label, value, onChange, options }) {
 
 function InvitationBodyEditor({ html, onChange, defaultHtml }) {
   const editorRef = useRef(null)
+  const selectionRef = useRef(null)
   const [isEditing, setIsEditing] = useState(false)
   const plainText = htmlToLines(html).join('\n')
   const charCount = plainText.replace(/\s/g, '').length
@@ -90,9 +91,27 @@ function InvitationBodyEditor({ html, onChange, defaultHtml }) {
     onChange(nextHtml, htmlToLines(nextHtml))
   }
 
+  const saveSelection = () => {
+    const selection = window.getSelection()
+    if (!selection || selection.rangeCount === 0 || !editorRef.current) return
+    const range = selection.getRangeAt(0)
+    if (editorRef.current.contains(range.commonAncestorContainer)) {
+      selectionRef.current = range.cloneRange()
+    }
+  }
+
+  const restoreSelection = () => {
+    const selection = window.getSelection()
+    if (!selection || !selectionRef.current) return
+    selection.removeAllRanges()
+    selection.addRange(selectionRef.current)
+  }
+
   const runCommand = (command, value = null) => {
     editorRef.current?.focus()
+    restoreSelection()
     document.execCommand(command, false, value)
+    saveSelection()
     emitChange()
   }
 
@@ -134,6 +153,26 @@ function InvitationBodyEditor({ html, onChange, defaultHtml }) {
         <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('fontSize', '2')}>작게</button>
         <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('fontSize', '3')}>보통</button>
         <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('fontSize', '4')}>크게</button>
+        <label className='admin__toolbar-select'>
+          폰트
+          <select
+            defaultValue=''
+            onMouseDown={saveSelection}
+            onFocus={saveSelection}
+            onChange={(event) => {
+              if (!event.target.value) return
+              runCommand('fontName', event.target.value)
+              event.target.value = ''
+            }}
+          >
+            <option value='' disabled>선택</option>
+            <option value='GmarketSansLight'>Gmarket Light</option>
+            <option value='GmarketSansMedium'>Gmarket Medium</option>
+            <option value='Gowun Dodum'>Gowun Dodum</option>
+            <option value='serif'>Serif</option>
+            <option value='sans-serif'>Sans Serif</option>
+          </select>
+        </label>
         <label className='admin__toolbar-color' onMouseDown={toolbarMouseDown}>
           글자색
           <input type='color' defaultValue='#5f4a3d' onChange={(event) => runCommand('foreColor', event.target.value)} />
@@ -159,9 +198,15 @@ function InvitationBodyEditor({ html, onChange, defaultHtml }) {
         onFocus={() => setIsEditing(true)}
         onBlur={() => {
           setIsEditing(false)
+          saveSelection()
           emitChange()
         }}
-        onInput={emitChange}
+        onMouseUp={saveSelection}
+        onKeyUp={saveSelection}
+        onInput={() => {
+          saveSelection()
+          emitChange()
+        }}
       />
 
       <div className='admin__editor-preview' aria-label='초대글 미리보기'>
