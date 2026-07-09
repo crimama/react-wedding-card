@@ -33,6 +33,23 @@ function htmlToLines(html) {
   return element.innerText.split('\n').map((line) => line.trim()).filter(Boolean)
 }
 
+const EDITOR_FONT_OPTIONS = [
+  { value: 'GmarketSansLight', label: 'Gmarket Light' },
+  { value: 'GmarketSansMedium', label: 'Gmarket Medium' },
+  { value: 'GmarketSansBold', label: 'Gmarket Bold' },
+  { value: 'Gowun Dodum', label: 'Gowun Dodum' },
+  { value: 'Gowun Batang', label: 'Gowun Batang' },
+  { value: 'Noto Sans KR', label: 'Noto Sans KR' },
+  { value: 'Noto Serif KR', label: 'Noto Serif KR' },
+  { value: 'Nanum Gothic', label: 'Nanum Gothic' },
+  { value: 'Nanum Myeongjo', label: 'Nanum Myeongjo' },
+  { value: 'Hahmlet', label: 'Hahmlet' },
+  { value: 'Song Myung', label: 'Song Myung' },
+  { value: 'Black Han Sans', label: 'Black Han Sans' },
+  { value: 'serif', label: 'Serif' },
+  { value: 'sans-serif', label: 'Sans Serif' },
+]
+
 function TextField({ label, value, onChange, placeholder }) {
   return (
     <label className='admin__field'>
@@ -72,7 +89,15 @@ function SelectField({ label, value, onChange, options }) {
   )
 }
 
-function InvitationBodyEditor({ html, onChange, defaultHtml }) {
+function RichTextEditor({
+  html,
+  onChange,
+  defaultHtml,
+  label = '본문 에디터',
+  description = '본문 안에서 자유롭게 쓰고 지우고, 선택한 문장에 굵게·밑줄·색상·정렬을 적용할 수 있습니다.',
+  placeholder = '여기에 문구를 자유롭게 작성해주세요.',
+  previewTitle = '청첩장 반영 미리보기',
+}) {
   const editorRef = useRef(null)
   const selectionRef = useRef(null)
   const [isEditing, setIsEditing] = useState(false)
@@ -133,8 +158,8 @@ function InvitationBodyEditor({ html, onChange, defaultHtml }) {
     <div className='admin__body-editor admin__field--full'>
       <div className='admin__body-editor-head'>
         <div>
-          <span className='admin__field-label'>본문 에디터</span>
-          <p>본문 안에서 자유롭게 쓰고 지우고, 선택한 문장에 굵게·밑줄·색상·정렬을 적용할 수 있습니다.</p>
+          <span className='admin__field-label'>{label}</span>
+          <p>{description}</p>
         </div>
         <div className='admin__body-editor-count'>
           <strong>{lineCount}</strong>줄 · <strong>{charCount}</strong>자
@@ -166,11 +191,9 @@ function InvitationBodyEditor({ html, onChange, defaultHtml }) {
             }}
           >
             <option value='' disabled>선택</option>
-            <option value='GmarketSansLight'>Gmarket Light</option>
-            <option value='GmarketSansMedium'>Gmarket Medium</option>
-            <option value='Gowun Dodum'>Gowun Dodum</option>
-            <option value='serif'>Serif</option>
-            <option value='sans-serif'>Sans Serif</option>
+            {EDITOR_FONT_OPTIONS.map((option) => (
+              <option value={option.value} key={option.value}>{option.label}</option>
+            ))}
           </select>
         </label>
         <label className='admin__toolbar-color' onMouseDown={toolbarMouseDown}>
@@ -194,7 +217,7 @@ function InvitationBodyEditor({ html, onChange, defaultHtml }) {
         suppressContentEditableWarning
         role='textbox'
         aria-label='초대글 본문 자유 편집기'
-        data-placeholder='여기에 초대글 본문을 자유롭게 작성해주세요.'
+        data-placeholder={placeholder}
         onFocus={() => setIsEditing(true)}
         onBlur={() => {
           setIsEditing(false)
@@ -210,7 +233,7 @@ function InvitationBodyEditor({ html, onChange, defaultHtml }) {
       />
 
       <div className='admin__editor-preview' aria-label='초대글 미리보기'>
-        <div className='admin__editor-preview-title'>청첩장 반영 미리보기</div>
+        <div className='admin__editor-preview-title'>{previewTitle}</div>
         <div
           className='admin__editor-preview-paper admin__editor-preview-paper--rich'
           dangerouslySetInnerHTML={{ __html: html || '<p class="admin__editor-preview-empty">아직 입력된 본문이 없습니다.</p>' }}
@@ -295,9 +318,11 @@ function Admin() {
         <h2>초대글</h2>
         <div className='admin__grid'>
           <TextField label='제목' value={draft.invitation.title} onChange={(value) => setValue('invitation.title', value)} />
-          <InvitationBodyEditor
+          <RichTextEditor
+            label='초대글 본문'
             html={draft.invitation.bodyHtml || linesToHtml(draft.invitation.lines)}
             defaultHtml={defaultSiteConfig.invitation.bodyHtml}
+            placeholder='초대글 본문을 자유롭게 작성해주세요.'
             onChange={(bodyHtml, lines) => {
               setDraft((current) => ({
                 ...current,
@@ -327,9 +352,42 @@ function Admin() {
           <TextField label='버튼 문구' value={draft.calendar.googleButtonText} onChange={(value) => setValue('calendar.googleButtonText', value)} />
           <TextField label='장소명' value={draft.location.name} onChange={(value) => setValue('location.name', value)} />
           <TextField label='주소' value={draft.location.address} onChange={(value) => setValue('location.address', value)} />
-          <TextAreaField label='대중교통 안내, HTML 허용' value={draft.location.transitHtml} onChange={(value) => setValue('location.transitHtml', value)} />
-          <TextAreaField label='주차 안내, HTML 허용' value={draft.location.parkingHtml} onChange={(value) => setValue('location.parkingHtml', value)} />
-          <TextAreaField label='주의 문구' rows={3} value={draft.location.notice} onChange={(value) => setValue('location.notice', value)} />
+          <RichTextEditor
+            label='대중교통 안내'
+            description='오시는 길 대중교통 문구를 자유롭게 편집합니다. 선택한 텍스트의 폰트·색상·정렬을 바꿀 수 있습니다.'
+            html={draft.location.transitHtml}
+            defaultHtml={defaultSiteConfig.location.transitHtml}
+            placeholder='대중교통 안내를 입력해주세요.'
+            previewTitle='대중교통 미리보기'
+            onChange={(value) => setValue('location.transitHtml', value)}
+          />
+          <RichTextEditor
+            label='주차 안내'
+            description='주차 안내 문구를 자유롭게 편집합니다.'
+            html={draft.location.parkingHtml}
+            defaultHtml={defaultSiteConfig.location.parkingHtml}
+            placeholder='주차 안내를 입력해주세요.'
+            previewTitle='주차 안내 미리보기'
+            onChange={(value) => setValue('location.parkingHtml', value)}
+          />
+          <RichTextEditor
+            label='주의 문구'
+            description='오시는 길 하단 주의 문구를 자유롭게 편집합니다.'
+            html={draft.location.noticeHtml || linesToHtml([draft.location.notice])}
+            defaultHtml={defaultSiteConfig.location.noticeHtml}
+            placeholder='주의 문구를 입력해주세요.'
+            previewTitle='주의 문구 미리보기'
+            onChange={(noticeHtml, lines) => {
+              setDraft((current) => ({
+                ...current,
+                location: {
+                  ...current.location,
+                  noticeHtml,
+                  notice: lines.join('\n'),
+                },
+              }))
+            }}
+          />
         </div>
       </section>
 

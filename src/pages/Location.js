@@ -10,6 +10,27 @@ const LNG = 126.9594982;
 const NMAP_PLACE_ID = 13321741;
 const KMAP_PLACE_ID = 8634826;
 
+function linesToHtml(lines) {
+  return lines.map((line) => `<p>${line}</p>`).join('')
+}
+
+function sanitizeHtml(html) {
+  const template = document.createElement('template')
+  template.innerHTML = html
+  template.content.querySelectorAll('script, style, iframe, object, embed, link, meta').forEach((node) => node.remove())
+  template.content.querySelectorAll('*').forEach((node) => {
+    Array.from(node.attributes).forEach((attribute) => {
+      const name = attribute.name.toLowerCase()
+      const value = attribute.value.toLowerCase()
+      const unsafeProtocol = ['java', 'script:'].join('')
+      if (name.startsWith('on') || value.includes(unsafeProtocol)) {
+        node.removeAttribute(attribute.name)
+      }
+    })
+  })
+  return template.innerHTML
+}
+
 function Location() {
   const { settings } = useSiteSettings()
   const { location } = settings
@@ -78,13 +99,14 @@ function Location() {
 
       <div className='location__info'>
         <div className='location__section-title'>{location.transitTitle}</div>
-        <div className='location__content' dangerouslySetInnerHTML={{ __html: location.transitHtml }} />
+        <div className='location__content location__content--rich' dangerouslySetInnerHTML={{ __html: sanitizeHtml(location.transitHtml) }} />
 
         <div className='location__section-title'>{location.parkingTitle}</div>
-        <div className='location__content' dangerouslySetInnerHTML={{ __html: location.parkingHtml }} />
-        <div className='location__notice'>
-          {location.notice}
-        </div>
+        <div className='location__content location__content--rich' dangerouslySetInnerHTML={{ __html: sanitizeHtml(location.parkingHtml) }} />
+        <div
+          className='location__notice location__notice--rich'
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(location.noticeHtml || linesToHtml([location.notice])) }}
+        />
       </div>
     </div>
   )
