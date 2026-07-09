@@ -57,6 +57,57 @@ function SelectField({ label, value, onChange, options }) {
   )
 }
 
+function InvitationBodyEditor({ value, onChange, defaultLines }) {
+  const textValue = value.join('\n')
+  const charCount = textValue.replace(/\s/g, '').length
+
+  const updateFromText = (nextText) => {
+    onChange(splitLines(nextText))
+  }
+
+  const appendParagraph = () => {
+    const nextText = textValue ? `${textValue}\n새 문단을 입력해주세요.` : '새 문단을 입력해주세요.'
+    updateFromText(nextText)
+  }
+
+  return (
+    <div className='admin__body-editor admin__field--full'>
+      <div className='admin__body-editor-head'>
+        <div>
+          <span className='admin__field-label'>본문 문구</span>
+          <p>게시글을 쓰듯 문단별로 입력하세요. 줄바꿈 1줄이 청첩장 본문 1줄로 반영됩니다.</p>
+        </div>
+        <div className='admin__body-editor-count'>
+          <strong>{value.length}</strong>줄 · <strong>{charCount}</strong>자
+        </div>
+      </div>
+
+      <div className='admin__editor-toolbar' aria-label='초대글 본문 편집 도구'>
+        <button type='button' onClick={appendParagraph}>+ 문단 추가</button>
+        <button type='button' onClick={() => onChange(defaultLines)}>기본 문구</button>
+        <button type='button' onClick={() => onChange([])}>전체 지우기</button>
+      </div>
+
+      <textarea
+        className='admin__post-editor'
+        rows={10}
+        value={textValue}
+        placeholder={'초대글 본문을 입력해주세요.\n줄을 나누면 청첩장에서도 줄이 나뉘어 보입니다.'}
+        onChange={(event) => updateFromText(event.target.value)}
+      />
+
+      <div className='admin__editor-preview' aria-label='초대글 미리보기'>
+        <div className='admin__editor-preview-title'>미리보기</div>
+        <div className='admin__editor-preview-paper'>
+          {value.length > 0 ? value.map((line, index) => (
+            <p key={`${line}-${index}`}>{line}</p>
+          )) : <p className='admin__editor-preview-empty'>아직 입력된 본문이 없습니다.</p>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Admin() {
   const { settings, isLoadingSettings } = useSiteSettings()
   const [draft, setDraft] = useState(defaultSiteConfig)
@@ -132,7 +183,11 @@ function Admin() {
         <h2>초대글</h2>
         <div className='admin__grid'>
           <TextField label='제목' value={draft.invitation.title} onChange={(value) => setValue('invitation.title', value)} />
-          <TextAreaField label='본문 문구, 줄바꿈 기준' rows={7} value={draft.invitation.lines.join('\n')} onChange={(value) => setValue('invitation.lines', splitLines(value))} />
+          <InvitationBodyEditor
+            value={draft.invitation.lines}
+            defaultLines={defaultSiteConfig.invitation.lines}
+            onChange={(value) => setValue('invitation.lines', value)}
+          />
           <TextField label='신랑 부모님' value={draft.invitation.groomParents} onChange={(value) => setValue('invitation.groomParents', value)} />
           <TextField label='신랑 관계' value={draft.invitation.groomRelation} onChange={(value) => setValue('invitation.groomRelation', value)} />
           <TextField label='신랑 표기' value={draft.invitation.groomName} onChange={(value) => setValue('invitation.groomName', value)} />
