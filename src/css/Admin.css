@@ -586,3 +586,48 @@
 .admin__editor-preview-paper--rich font[face='Gowun Dodum'] {
   font-family: 'Gowun Dodum', sans-serif;
 }
+
+.admin__rich-editor font[face='GmarketSansBold'],
+.admin__editor-preview-paper--rich font[face='GmarketSansBold'] {
+  font-family: 'GmarketSansBold', sans-serif;
+}
+
+.admin__rich-editor font[face='Gowun Batang'],
+.admin__editor-preview-paper--rich font[face='Gowun Batang'] {
+  font-family: 'Gowun Batang', serif;
+}
+
+.admin__rich-editor font[face='Noto Sans KR'],
+.admin__editor-preview-paper--rich font[face='Noto Sans KR'] {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.admin__rich-editor font[face='Noto Serif KR'],
+.admin__editor-preview-paper--rich font[face='Noto Serif KR'] {
+  font-family: 'Noto Serif KR', serif;
+}
+
+.admin__rich-editor font[face='Nanum Gothic'],
+.admin__editor-preview-paper--rich font[face='Nanum Gothic'] {
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+.admin__rich-editor font[face='Nanum Myeongjo'],
+.admin__editor-preview-paper--rich font[face='Nanum Myeongjo'] {
+  font-family: 'Nanum Myeongjo', serif;
+}
+
+.admin__rich-editor font[face='Hahmlet'],
+.admin__editor-preview-paper--rich font[face='Hahmlet'] {
+  font-family: 'Hahmlet', serif;
+}
+
+.admin__rich-editor font[face='Song Myung'],
+.admin__editor-preview-paper--rich font[face='Song Myung'] {
+  font-family: 'Song Myung', serif;
+}
+
+.admin__rich-editor font[face='Black Han Sans'],
+.admin__editor-preview-paper--rich font[face='Black Han Sans'] {
+  font-family: 'Black Han Sans', sans-serif;
+}

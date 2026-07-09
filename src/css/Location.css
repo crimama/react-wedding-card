@@ -122,3 +122,42 @@
 .bold {
   font-weight: bold;
 }
+
+.location__content--rich p,
+.location__content--rich div,
+.location__notice--rich p,
+.location__notice--rich div {
+  margin: 0 0 6px;
+}
+
+.location__content--rich p:last-child,
+.location__content--rich div:last-child,
+.location__notice--rich p:last-child,
+.location__notice--rich div:last-child {
+  margin-bottom: 0;
+}
+
+.location__content--rich font[face='GmarketSansLight'],
+.location__notice--rich font[face='GmarketSansLight'] { font-family: 'GmarketSansLight', sans-serif; }
+.location__content--rich font[face='GmarketSansMedium'],
+.location__notice--rich font[face='GmarketSansMedium'] { font-family: 'GmarketSansMedium', sans-serif; }
+.location__content--rich font[face='GmarketSansBold'],
+.location__notice--rich font[face='GmarketSansBold'] { font-family: 'GmarketSansBold', sans-serif; }
+.location__content--rich font[face='Gowun Dodum'],
+.location__notice--rich font[face='Gowun Dodum'] { font-family: 'Gowun Dodum', sans-serif; }
+.location__content--rich font[face='Gowun Batang'],
+.location__notice--rich font[face='Gowun Batang'] { font-family: 'Gowun Batang', serif; }
+.location__content--rich font[face='Noto Sans KR'],
+.location__notice--rich font[face='Noto Sans KR'] { font-family: 'Noto Sans KR', sans-serif; }
+.location__content--rich font[face='Noto Serif KR'],
+.location__notice--rich font[face='Noto Serif KR'] { font-family: 'Noto Serif KR', serif; }
+.location__content--rich font[face='Nanum Gothic'],
+.location__notice--rich font[face='Nanum Gothic'] { font-family: 'Nanum Gothic', sans-serif; }
+.location__content--rich font[face='Nanum Myeongjo'],
+.location__notice--rich font[face='Nanum Myeongjo'] { font-family: 'Nanum Myeongjo', serif; }
+.location__content--rich font[face='Hahmlet'],
+.location__notice--rich font[face='Hahmlet'] { font-family: 'Hahmlet', serif; }
+.location__content--rich font[face='Song Myung'],
+.location__notice--rich font[face='Song Myung'] { font-family: 'Song Myung', serif; }
+.location__content--rich font[face='Black Han Sans'],
+.location__notice--rich font[face='Black Han Sans'] { font-family: 'Black Han Sans', sans-serif; }
