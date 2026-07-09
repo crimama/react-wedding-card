@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { setDoc, serverTimestamp } from 'firebase/firestore'
 import { defaultSiteConfig, getSettingsDocRef, mergeSettings, useSiteSettings } from '../SiteSettingsContext'
 
@@ -16,6 +16,25 @@ function updateNestedValue(source, path, value) {
 
 function splitLines(value) {
   return value.split('\n').map((line) => line.trim()).filter(Boolean)
+}
+
+function escapeHtml(value) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
+function linesToHtml(lines) {
+  return lines.map((line) => `<p>${escapeHtml(line)}</p>`).join('')
+}
+
+function htmlToLines(html) {
+  const element = document.createElement('div')
+  element.innerHTML = html
+  return element.innerText.split('\n').map((line) => line.trim()).filter(Boolean)
 }
 
 function TextField({ label, value, onChange, placeholder }) {
@@ -57,52 +76,104 @@ function SelectField({ label, value, onChange, options }) {
   )
 }
 
-function InvitationBodyEditor({ value, onChange, defaultLines }) {
-  const textValue = value.join('\n')
-  const charCount = textValue.replace(/\s/g, '').length
+function InvitationBodyEditor({ html, onChange, defaultHtml }) {
+  const editorRef = useRef(null)
+  const [isEditing, setIsEditing] = useState(false)
+  const plainText = htmlToLines(html).join('\n')
+  const charCount = plainText.replace(/\s/g, '').length
+  const lineCount = htmlToLines(html).length
 
-  const updateFromText = (nextText) => {
-    onChange(splitLines(nextText))
+  useEffect(() => {
+    if (!isEditing && editorRef.current && editorRef.current.innerHTML !== html) {
+      editorRef.current.innerHTML = html || ''
+    }
+  }, [html, isEditing])
+
+  const emitChange = () => {
+    const nextHtml = editorRef.current?.innerHTML || ''
+    onChange(nextHtml, htmlToLines(nextHtml))
   }
 
-  const appendParagraph = () => {
-    const nextText = textValue ? `${textValue}\n새 문단을 입력해주세요.` : '새 문단을 입력해주세요.'
-    updateFromText(nextText)
+  const runCommand = (command, value = null) => {
+    editorRef.current?.focus()
+    document.execCommand(command, false, value)
+    emitChange()
+  }
+
+  const toolbarMouseDown = (event) => {
+    event.preventDefault()
+  }
+
+  const resetToDefault = () => {
+    if (editorRef.current) editorRef.current.innerHTML = defaultHtml
+    onChange(defaultHtml, htmlToLines(defaultHtml))
+  }
+
+  const clearAll = () => {
+    if (editorRef.current) editorRef.current.innerHTML = ''
+    onChange('', [])
   }
 
   return (
     <div className='admin__body-editor admin__field--full'>
       <div className='admin__body-editor-head'>
         <div>
-          <span className='admin__field-label'>본문 문구</span>
-          <p>게시글을 쓰듯 문단별로 입력하세요. 줄바꿈 1줄이 청첩장 본문 1줄로 반영됩니다.</p>
+          <span className='admin__field-label'>본문 에디터</span>
+          <p>본문 안에서 자유롭게 쓰고 지우고, 선택한 문장에 굵게·밑줄·색상·정렬을 적용할 수 있습니다.</p>
         </div>
         <div className='admin__body-editor-count'>
-          <strong>{value.length}</strong>줄 · <strong>{charCount}</strong>자
+          <strong>{lineCount}</strong>줄 · <strong>{charCount}</strong>자
         </div>
       </div>
 
-      <div className='admin__editor-toolbar' aria-label='초대글 본문 편집 도구'>
-        <button type='button' onClick={appendParagraph}>+ 문단 추가</button>
-        <button type='button' onClick={() => onChange(defaultLines)}>기본 문구</button>
-        <button type='button' onClick={() => onChange([])}>전체 지우기</button>
+      <div className='admin__editor-toolbar' aria-label='초대글 본문 스타일 도구'>
+        <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('bold')}>굵게</button>
+        <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('italic')}>기울임</button>
+        <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('underline')}>밑줄</button>
+        <span className='admin__toolbar-divider' />
+        <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('justifyLeft')}>왼쪽</button>
+        <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('justifyCenter')}>가운데</button>
+        <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('justifyRight')}>오른쪽</button>
+        <span className='admin__toolbar-divider' />
+        <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('fontSize', '2')}>작게</button>
+        <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('fontSize', '3')}>보통</button>
+        <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('fontSize', '4')}>크게</button>
+        <label className='admin__toolbar-color' onMouseDown={toolbarMouseDown}>
+          글자색
+          <input type='color' defaultValue='#5f4a3d' onChange={(event) => runCommand('foreColor', event.target.value)} />
+        </label>
+        <label className='admin__toolbar-color' onMouseDown={toolbarMouseDown}>
+          형광펜
+          <input type='color' defaultValue='#fff1c8' onChange={(event) => runCommand('hiliteColor', event.target.value)} />
+        </label>
+        <span className='admin__toolbar-divider' />
+        <button type='button' onMouseDown={toolbarMouseDown} onClick={() => runCommand('removeFormat')}>서식 지우기</button>
+        <button type='button' onMouseDown={toolbarMouseDown} onClick={resetToDefault}>기본 문구</button>
+        <button type='button' onMouseDown={toolbarMouseDown} onClick={clearAll}>전체 지우기</button>
       </div>
 
-      <textarea
-        className='admin__post-editor'
-        rows={10}
-        value={textValue}
-        placeholder={'초대글 본문을 입력해주세요.\n줄을 나누면 청첩장에서도 줄이 나뉘어 보입니다.'}
-        onChange={(event) => updateFromText(event.target.value)}
+      <div
+        ref={editorRef}
+        className='admin__rich-editor'
+        contentEditable
+        suppressContentEditableWarning
+        role='textbox'
+        aria-label='초대글 본문 자유 편집기'
+        data-placeholder='여기에 초대글 본문을 자유롭게 작성해주세요.'
+        onFocus={() => setIsEditing(true)}
+        onBlur={() => {
+          setIsEditing(false)
+          emitChange()
+        }}
+        onInput={emitChange}
       />
 
       <div className='admin__editor-preview' aria-label='초대글 미리보기'>
-        <div className='admin__editor-preview-title'>미리보기</div>
-        <div className='admin__editor-preview-paper'>
-          {value.length > 0 ? value.map((line, index) => (
-            <p key={`${line}-${index}`}>{line}</p>
-          )) : <p className='admin__editor-preview-empty'>아직 입력된 본문이 없습니다.</p>}
-        </div>
+        <div className='admin__editor-preview-title'>청첩장 반영 미리보기</div>
+        <div
+          className='admin__editor-preview-paper admin__editor-preview-paper--rich'
+          dangerouslySetInnerHTML={{ __html: html || '<p class="admin__editor-preview-empty">아직 입력된 본문이 없습니다.</p>' }}
+        />
       </div>
     </div>
   )
@@ -184,9 +255,18 @@ function Admin() {
         <div className='admin__grid'>
           <TextField label='제목' value={draft.invitation.title} onChange={(value) => setValue('invitation.title', value)} />
           <InvitationBodyEditor
-            value={draft.invitation.lines}
-            defaultLines={defaultSiteConfig.invitation.lines}
-            onChange={(value) => setValue('invitation.lines', value)}
+            html={draft.invitation.bodyHtml || linesToHtml(draft.invitation.lines)}
+            defaultHtml={defaultSiteConfig.invitation.bodyHtml}
+            onChange={(bodyHtml, lines) => {
+              setDraft((current) => ({
+                ...current,
+                invitation: {
+                  ...current.invitation,
+                  bodyHtml,
+                  lines,
+                },
+              }))
+            }}
           />
           <TextField label='신랑 부모님' value={draft.invitation.groomParents} onChange={(value) => setValue('invitation.groomParents', value)} />
           <TextField label='신랑 관계' value={draft.invitation.groomRelation} onChange={(value) => setValue('invitation.groomRelation', value)} />
