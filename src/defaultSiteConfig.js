@@ -43,6 +43,7 @@ const defaultSiteConfig = {
     parkingTitle: '주차',
     parkingHtml: '주차요금 <b>무료(2시간)</b><br />주차장 이용시 웨딩홀과 바로 연결',
     notice: '※ 서울대학교 정문/후문을 통과할 경우 통행료가 발생하므로 낙성대 방향으로 이용해주세요.',
+    noticeHtml: '<p>※ 서울대학교 정문/후문을 통과할 경우 통행료가 발생하므로 낙성대 방향으로 이용해주세요.</p>',
   },
   account: {
     title: '마음 전하실 곳',
