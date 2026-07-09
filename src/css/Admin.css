@@ -543,3 +543,46 @@
     font-size: 15px;
   }
 }
+
+.admin__toolbar-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid #dfcec0;
+  border-radius: 999px;
+  padding: 6px 8px 6px 12px;
+  background: #fffaf3;
+  color: #6a5144;
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 12px;
+}
+
+.admin__toolbar-select select {
+  width: auto;
+  min-width: 126px;
+  border: 0;
+  border-left: 1px solid #eadfd4;
+  border-radius: 0;
+  padding: 2px 4px 2px 8px;
+  background: transparent;
+  color: #5f4a3d;
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.admin__rich-editor font[face='GmarketSansLight'],
+.admin__editor-preview-paper--rich font[face='GmarketSansLight'] {
+  font-family: 'GmarketSansLight', sans-serif;
+}
+
+.admin__rich-editor font[face='GmarketSansMedium'],
+.admin__editor-preview-paper--rich font[face='GmarketSansMedium'] {
+  font-family: 'GmarketSansMedium', sans-serif;
+}
+
+.admin__rich-editor font[face='Gowun Dodum'],
+.admin__editor-preview-paper--rich font[face='Gowun Dodum'] {
+  font-family: 'Gowun Dodum', sans-serif;
+}

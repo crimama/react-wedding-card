@@ -91,3 +91,15 @@
 .invitation__content--rich font[size='4'] {
   font-size: 1.12em;
 }
+
+.invitation__content--rich font[face='GmarketSansLight'] {
+  font-family: 'GmarketSansLight', sans-serif;
+}
+
+.invitation__content--rich font[face='GmarketSansMedium'] {
+  font-family: 'GmarketSansMedium', sans-serif;
+}
+
+.invitation__content--rich font[face='Gowun Dodum'] {
+  font-family: 'Gowun Dodum', sans-serif;
+}
