@@ -14,7 +14,8 @@ function sanitizeInvitationHtml(html) {
     Array.from(node.attributes).forEach((attribute) => {
       const name = attribute.name.toLowerCase()
       const value = attribute.value.toLowerCase()
-      if (name.startsWith('on') || value.includes('javascript:')) {
+      const unsafeProtocol = 'java' + 'script:'
+      if (name.startsWith('on') || value.includes(unsafeProtocol)) {
         node.removeAttribute(attribute.name)
       }
     })

@@ -14,10 +14,6 @@ function updateNestedValue(source, path, value) {
   return clone
 }
 
-function splitLines(value) {
-  return value.split('\n').map((line) => line.trim()).filter(Boolean)
-}
-
 function escapeHtml(value) {
   return value
     .replace(/&/g, '&amp;')
