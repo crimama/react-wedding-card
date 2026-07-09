@@ -58,3 +58,36 @@
   font-family: 'GmarketSansLight';
   color: var(--ink);
 }
+
+.invitation__content--rich {
+  text-align: center;
+}
+
+.invitation__content--rich p,
+.invitation__content--rich div {
+  margin: 0 0 8px;
+  line-height: inherit;
+}
+
+.invitation__content--rich p:last-child,
+.invitation__content--rich div:last-child {
+  margin-bottom: 0;
+}
+
+.invitation__content--rich b,
+.invitation__content--rich strong {
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-weight: 500;
+}
+
+.invitation__content--rich u {
+  text-underline-offset: 4px;
+}
+
+.invitation__content--rich font[size='2'] {
+  font-size: 0.9em;
+}
+
+.invitation__content--rich font[size='4'] {
+  font-size: 1.12em;
+}
