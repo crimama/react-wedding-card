@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react'
+import { useSiteSettings } from '../SiteSettingsContext'
 
 const PHOTO_UPLOAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwXjruiVY1yfJkvXMAkwtrytSw2_nk8EGTUufAC5lGkLrXpxxTW8GJ9xCIHzLyVPS4jtA/exec'
 const MAX_FILES = 10
@@ -23,7 +24,46 @@ function formatBytes(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(1)}MB`
 }
 
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
+function linesToHtml(lines) {
+  return lines.map((line) => `<p>${escapeHtml(line)}</p>`).join('')
+}
+
+function sanitizeHtml(html) {
+  const template = document.createElement('template')
+  template.innerHTML = html
+  template.content.querySelectorAll('script, style, iframe, object, embed, link, meta').forEach((node) => node.remove())
+  template.content.querySelectorAll('*').forEach((node) => {
+    Array.from(node.attributes).forEach((attribute) => {
+      const name = attribute.name.toLowerCase()
+      const value = attribute.value.toLowerCase()
+      const unsafeProtocol = ['java', 'script:'].join('')
+      if (name.startsWith('on') || value.includes(unsafeProtocol)) {
+        node.removeAttribute(attribute.name)
+      }
+    })
+  })
+  return template.innerHTML
+}
+
+function formatMessage(template, values) {
+  return Object.entries(values).reduce(
+    (message, [key, value]) => message.replace(`{${key}}`, value),
+    template,
+  )
+}
+
 function PhotoUpload() {
+  const { settings } = useSiteSettings()
+  const { photoUpload } = settings
   const [uploaderName, setUploaderName] = useState('')
   const [memo, setMemo] = useState('')
   const [files, setFiles] = useState([])
@@ -41,21 +81,21 @@ function PhotoUpload() {
     const selectedFiles = Array.from(event.target.files || [])
 
     if (selectedFiles.length > MAX_FILES) {
-      alert(`사진은 한 번에 최대 ${MAX_FILES}장까지 업로드할 수 있습니다.`)
+      alert(formatMessage(photoUpload.tooManyFilesMessage, { max: MAX_FILES }))
       event.target.value = ''
       return
     }
 
     const invalidFile = selectedFiles.find((file) => !ALLOWED_IMAGE_TYPES.includes(file.type))
     if (invalidFile) {
-      alert('이미지 파일만 업로드할 수 있습니다.')
+      alert(photoUpload.invalidFileMessage)
       event.target.value = ''
       return
     }
 
     const oversizedFile = selectedFiles.find((file) => file.size > MAX_FILE_BYTES)
     if (oversizedFile) {
-      alert('사진은 장당 20MB 이하만 업로드할 수 있습니다.')
+      alert(photoUpload.oversizedFileMessage)
       event.target.value = ''
       return
     }
@@ -68,26 +108,26 @@ function PhotoUpload() {
     event.preventDefault()
 
     if (!isConfigured) {
-      alert('사진 업로드 연결을 준비 중입니다. 잠시 후 다시 시도해주세요.')
+      alert(photoUpload.notConfiguredMessage)
       return
     }
 
     if (files.length === 0) {
-      alert('업로드할 사진을 선택해주세요.')
+      alert(photoUpload.noFileMessage)
       return
     }
 
     setUploading(true)
-    setStatus('사진을 업로드하는 중입니다. 창을 닫지 말아주세요.')
+    setStatus(photoUpload.uploadingMessage)
 
     const uploadForm = event.currentTarget
-    const trimmedName = uploaderName.trim() || '하객'
+    const trimmedName = uploaderName.trim() || photoUpload.defaultUploaderName
     const trimmedMemo = memo.trim()
 
     try {
       for (let index = 0; index < files.length; index += 1) {
         const file = files[index]
-        setStatus(`${index + 1}/${files.length}번째 사진을 업로드하는 중입니다. 창을 닫지 말아주세요.`)
+        setStatus(formatMessage(photoUpload.uploadingProgressTemplate, { current: index + 1, total: files.length }))
 
         const encodedFile = {
           name: file.name,
@@ -114,10 +154,10 @@ function PhotoUpload() {
       setMemo('')
       setFiles([])
       uploadForm.reset()
-      setStatus('사진 업로드 요청이 완료되었습니다. 소중한 사진 고맙습니다.')
+      setStatus(photoUpload.successMessage)
     } catch (error) {
       console.error('Error uploading guest photos:', error)
-      setStatus('사진 업로드에 실패했습니다. 네트워크 상태를 확인 후 다시 시도해주세요.')
+      setStatus(photoUpload.failureMessage)
     } finally {
       setUploading(false)
     }
@@ -125,31 +165,31 @@ function PhotoUpload() {
 
   return (
     <div className='container photo-upload'>
-      <div className='photo-upload__eyebrow'>PHOTO</div>
-      <div className='photo-upload__title'>하객 사진 업로드</div>
-      <div className='photo-upload__guide'>
-        예식장에서 찍은 사진을 남겨주세요.<br />
-        업로드된 사진은 신랑신부의 Google Drive로 저장됩니다.
-      </div>
+      <div className='photo-upload__eyebrow'>{photoUpload.eyebrow}</div>
+      <div className='photo-upload__title'>{photoUpload.title}</div>
+      <div
+        className='photo-upload__guide photo-upload__guide--rich'
+        dangerouslySetInnerHTML={{ __html: sanitizeHtml(photoUpload.guideHtml || linesToHtml([photoUpload.guide])) }}
+      />
 
       <form className='photo-upload__form' onSubmit={onPhotoSubmit}>
         <input
           className='photo-upload__input'
           type='text'
-          placeholder='이름 또는 별명'
+          placeholder={photoUpload.namePlaceholder}
           value={uploaderName}
           maxLength={40}
           onChange={(event) => setUploaderName(event.target.value)}
         />
         <textarea
           className='photo-upload__memo'
-          placeholder='사진과 함께 남길 메모가 있다면 적어주세요.'
+          placeholder={photoUpload.memoPlaceholder}
           value={memo}
           maxLength={120}
           onChange={(event) => setMemo(event.target.value)}
         />
         <label className='photo-upload__file-label'>
-          <span>{files.length > 0 ? `${files.length}장 선택됨` : '사진 선택하기'}</span>
+          <span>{files.length > 0 ? `${files.length}${photoUpload.selectedTextSuffix}` : photoUpload.selectButtonText}</span>
           <input
             type='file'
             accept='image/jpeg,image/png,image/webp,image/heic,image/heif,image/gif'
@@ -170,9 +210,12 @@ function PhotoUpload() {
           </div>
         )}
 
-        <div className='photo-upload__notice'>한 번에 최대 10장, 장당 20MB 이하의 이미지만 업로드할 수 있습니다.</div>
+        <div
+          className='photo-upload__notice photo-upload__notice--rich'
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(photoUpload.noticeHtml || linesToHtml([photoUpload.notice])) }}
+        />
         <button className='photo-upload__button' type='submit' disabled={uploading}>
-          {uploading ? '업로드 중...' : '사진 업로드하기'}
+          {uploading ? photoUpload.uploadingButtonText : photoUpload.submitButtonText}
         </button>
         {status && <div className='photo-upload__status'>{status}</div>}
       </form>

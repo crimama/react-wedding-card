@@ -347,11 +347,49 @@ function Admin() {
         <h2>일정·장소</h2>
         <div className='admin__grid'>
           <TextField label='캘린더 제목' value={draft.calendar.title} onChange={(value) => setValue('calendar.title', value)} />
-          <TextField label='날짜 문구' value={draft.calendar.dateLine} onChange={(value) => setValue('calendar.dateLine', value)} />
-          <TextField label='장소 문구' value={draft.calendar.placeLine} onChange={(value) => setValue('calendar.placeLine', value)} />
-          <TextField label='버튼 문구' value={draft.calendar.googleButtonText} onChange={(value) => setValue('calendar.googleButtonText', value)} />
-          <TextField label='장소명' value={draft.location.name} onChange={(value) => setValue('location.name', value)} />
-          <TextField label='주소' value={draft.location.address} onChange={(value) => setValue('location.address', value)} />
+          <RichTextEditor
+            label='일정 문구'
+            description='SAVE THE DATE 아래 날짜·시간 문구를 자유롭게 편집합니다.'
+            html={draft.calendar.dateHtml || linesToHtml([draft.calendar.dateLine])}
+            defaultHtml={defaultSiteConfig.calendar.dateHtml}
+            placeholder='일정 문구를 입력해주세요.'
+            previewTitle='일정 문구 미리보기'
+            onChange={(dateHtml, lines) => {
+              setDraft((current) => ({
+                ...current,
+                calendar: {
+                  ...current.calendar,
+                  dateHtml,
+                  dateLine: lines.join('\n'),
+                },
+              }))
+            }}
+          />
+          <RichTextEditor
+            label='장소 문구'
+            description='SAVE THE DATE 아래 장소 문구를 자유롭게 편집합니다.'
+            html={draft.calendar.placeHtml || linesToHtml([draft.calendar.placeLine])}
+            defaultHtml={defaultSiteConfig.calendar.placeHtml}
+            placeholder='장소 문구를 입력해주세요.'
+            previewTitle='장소 문구 미리보기'
+            onChange={(placeHtml, lines) => {
+              setDraft((current) => ({
+                ...current,
+                calendar: {
+                  ...current.calendar,
+                  placeHtml,
+                  placeLine: lines.join('\n'),
+                },
+              }))
+            }}
+          />
+          <TextField label='캘린더 버튼 문구' value={draft.calendar.googleButtonText} onChange={(value) => setValue('calendar.googleButtonText', value)} />
+          <TextField label='Google 일정 제목' value={draft.calendar.googleTitle} onChange={(value) => setValue('calendar.googleTitle', value)} />
+          <TextField label='Google 일정 시간' value={draft.calendar.googleDates} onChange={(value) => setValue('calendar.googleDates', value)} />
+          <TextField label='Google 일정 설명' value={draft.calendar.googleDetails} onChange={(value) => setValue('calendar.googleDetails', value)} />
+          <TextField label='Google 일정 장소' value={draft.calendar.googleLocation} onChange={(value) => setValue('calendar.googleLocation', value)} />
+          <TextField label='오시는 길 장소명' value={draft.location.name} onChange={(value) => setValue('location.name', value)} />
+          <TextField label='오시는 길 주소' value={draft.location.address} onChange={(value) => setValue('location.address', value)} />
           <RichTextEditor
             label='대중교통 안내'
             description='오시는 길 대중교통 문구를 자유롭게 편집합니다. 선택한 텍스트의 폰트·색상·정렬을 바꿀 수 있습니다.'
@@ -388,6 +426,66 @@ function Admin() {
               }))
             }}
           />
+        </div>
+      </section>
+
+      <section className='admin__section'>
+        <h2>하객 사진 업로드</h2>
+        <div className='admin__grid'>
+          <TextField label='상단 영문 표기' value={draft.photoUpload.eyebrow} onChange={(value) => setValue('photoUpload.eyebrow', value)} />
+          <TextField label='제목' value={draft.photoUpload.title} onChange={(value) => setValue('photoUpload.title', value)} />
+          <RichTextEditor
+            label='사진 업로드 안내문'
+            description='하객 사진 업로드 제목 아래 안내 문구를 자유롭게 편집합니다.'
+            html={draft.photoUpload.guideHtml || linesToHtml([draft.photoUpload.guide])}
+            defaultHtml={defaultSiteConfig.photoUpload.guideHtml}
+            placeholder='사진 업로드 안내문을 입력해주세요.'
+            previewTitle='사진 업로드 안내문 미리보기'
+            onChange={(guideHtml, lines) => {
+              setDraft((current) => ({
+                ...current,
+                photoUpload: {
+                  ...current.photoUpload,
+                  guideHtml,
+                  guide: lines.join('\n'),
+                },
+              }))
+            }}
+          />
+          <TextField label='이름 입력 placeholder' value={draft.photoUpload.namePlaceholder} onChange={(value) => setValue('photoUpload.namePlaceholder', value)} />
+          <TextField label='메모 입력 placeholder' value={draft.photoUpload.memoPlaceholder} onChange={(value) => setValue('photoUpload.memoPlaceholder', value)} />
+          <TextField label='사진 선택 버튼' value={draft.photoUpload.selectButtonText} onChange={(value) => setValue('photoUpload.selectButtonText', value)} />
+          <TextField label='선택 완료 접미사' value={draft.photoUpload.selectedTextSuffix} onChange={(value) => setValue('photoUpload.selectedTextSuffix', value)} />
+          <RichTextEditor
+            label='업로드 제한 안내문'
+            description='사진 선택 버튼 아래 제한 안내 문구를 자유롭게 편집합니다.'
+            html={draft.photoUpload.noticeHtml || linesToHtml([draft.photoUpload.notice])}
+            defaultHtml={defaultSiteConfig.photoUpload.noticeHtml}
+            placeholder='업로드 제한 안내문을 입력해주세요.'
+            previewTitle='업로드 제한 안내문 미리보기'
+            onChange={(noticeHtml, lines) => {
+              setDraft((current) => ({
+                ...current,
+                photoUpload: {
+                  ...current.photoUpload,
+                  noticeHtml,
+                  notice: lines.join('\n'),
+                },
+              }))
+            }}
+          />
+          <TextField label='업로드 버튼' value={draft.photoUpload.submitButtonText} onChange={(value) => setValue('photoUpload.submitButtonText', value)} />
+          <TextField label='업로드 중 버튼' value={draft.photoUpload.uploadingButtonText} onChange={(value) => setValue('photoUpload.uploadingButtonText', value)} />
+          <TextField label='기본 업로더 이름' value={draft.photoUpload.defaultUploaderName} onChange={(value) => setValue('photoUpload.defaultUploaderName', value)} />
+          <TextField label='성공 메시지' value={draft.photoUpload.successMessage} onChange={(value) => setValue('photoUpload.successMessage', value)} />
+          <TextField label='업로드 시작 메시지' value={draft.photoUpload.uploadingMessage} onChange={(value) => setValue('photoUpload.uploadingMessage', value)} />
+          <TextField label='업로드 진행 메시지' value={draft.photoUpload.uploadingProgressTemplate} onChange={(value) => setValue('photoUpload.uploadingProgressTemplate', value)} />
+          <TextField label='실패 메시지' value={draft.photoUpload.failureMessage} onChange={(value) => setValue('photoUpload.failureMessage', value)} />
+          <TextField label='미연결 메시지' value={draft.photoUpload.notConfiguredMessage} onChange={(value) => setValue('photoUpload.notConfiguredMessage', value)} />
+          <TextField label='파일 없음 메시지' value={draft.photoUpload.noFileMessage} onChange={(value) => setValue('photoUpload.noFileMessage', value)} />
+          <TextField label='파일 개수 초과 메시지' value={draft.photoUpload.tooManyFilesMessage} onChange={(value) => setValue('photoUpload.tooManyFilesMessage', value)} />
+          <TextField label='잘못된 파일 메시지' value={draft.photoUpload.invalidFileMessage} onChange={(value) => setValue('photoUpload.invalidFileMessage', value)} />
+          <TextField label='용량 초과 메시지' value={draft.photoUpload.oversizedFileMessage} onChange={(value) => setValue('photoUpload.oversizedFileMessage', value)} />
         </div>
       </section>
 
