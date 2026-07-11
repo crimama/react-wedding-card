@@ -50,6 +50,15 @@ const EDITOR_FONT_OPTIONS = [
   { value: 'sans-serif', label: 'Sans Serif' },
 ]
 
+const LETTER_SPACING_OPTIONS = [
+  { value: '-0.08em', label: '매우 좁게' },
+  { value: '-0.04em', label: '좁게' },
+  { value: '0', label: '기본' },
+  { value: '0.04em', label: '넓게' },
+  { value: '0.08em', label: '더 넓게' },
+  { value: '0.12em', label: '매우 넓게' },
+]
+
 function TextField({ label, value, onChange, placeholder }) {
   return (
     <label className='admin__field'>
@@ -140,6 +149,26 @@ function RichTextEditor({
     emitChange()
   }
 
+  const applyInlineStyle = (styleName, value) => {
+    editorRef.current?.focus()
+    restoreSelection()
+    const selection = window.getSelection()
+    if (!selection || selection.rangeCount === 0 || selection.isCollapsed) return
+    const range = selection.getRangeAt(0)
+    if (!editorRef.current?.contains(range.commonAncestorContainer)) return
+
+    const span = document.createElement('span')
+    span.style[styleName] = value
+    span.appendChild(range.extractContents())
+    range.insertNode(span)
+    selection.removeAllRanges()
+    const nextRange = document.createRange()
+    nextRange.selectNodeContents(span)
+    selection.addRange(nextRange)
+    saveSelection()
+    emitChange()
+  }
+
   const toolbarMouseDown = (event) => {
     event.preventDefault()
   }
@@ -192,6 +221,24 @@ function RichTextEditor({
           >
             <option value='' disabled>선택</option>
             {EDITOR_FONT_OPTIONS.map((option) => (
+              <option value={option.value} key={option.value}>{option.label}</option>
+            ))}
+          </select>
+        </label>
+        <label className='admin__toolbar-select'>
+          자간
+          <select
+            defaultValue=''
+            onMouseDown={saveSelection}
+            onFocus={saveSelection}
+            onChange={(event) => {
+              if (!event.target.value) return
+              applyInlineStyle('letterSpacing', event.target.value)
+              event.target.value = ''
+            }}
+          >
+            <option value='' disabled>선택</option>
+            {LETTER_SPACING_OPTIONS.map((option) => (
               <option value={option.value} key={option.value}>{option.label}</option>
             ))}
           </select>
@@ -510,6 +557,7 @@ function Admin() {
           <TextField label='공유 URL' value={draft.footer.shareUrl} onChange={(value) => setValue('footer.shareUrl', value)} />
           <TextField label='공유 제목' value={draft.footer.shareTitle} onChange={(value) => setValue('footer.shareTitle', value)} />
           <TextField label='공유 문구' value={draft.footer.shareText} onChange={(value) => setValue('footer.shareText', value)} />
+          <TextField label='공유 이미지 URL' value={draft.footer.shareImage} onChange={(value) => setValue('footer.shareImage', value)} />
           <TextField label='공유 버튼' value={draft.footer.shareButtonText} onChange={(value) => setValue('footer.shareButtonText', value)} />
           <TextField label='하단 이름' value={draft.footer.names} onChange={(value) => setValue('footer.names', value)} />
           <TextField label='하단 날짜·장소' value={draft.footer.datePlace} onChange={(value) => setValue('footer.datePlace', value)} />
