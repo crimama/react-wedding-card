@@ -95,6 +95,7 @@ const defaultSiteConfig = {
     shareUrl: 'https://crimama.github.io/react-wedding-card/',
     shareTitle: '임훈 ♥ 오윤경 결혼합니다',
     shareText: '2026년 11월 28일 토요일 오후 5시, 서울대학교 연구공원 웨딩홀',
+    shareImage: 'https://crimama.github.io/react-wedding-card/wedding.jpg',
     shareButtonText: '카카오톡 공유하기',
     names: '임훈 ♥ 오윤경',
     datePlace: '2026.11.28 서울대학교 연구공원 웨딩홀',

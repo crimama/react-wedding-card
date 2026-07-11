@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './App.css';
 
 import './css/Cover.css'
@@ -24,8 +24,33 @@ import PhotoUpload from './pages/PhotoUpload.js';
 import Admin from './pages/Admin.js';
 import { SiteSettingsProvider, useSiteSettings } from './SiteSettingsContext';
 
+function setMetaContent(selector, content, attributeName, attributeValue) {
+  if (!content) return
+  let meta = document.querySelector(selector)
+  if (!meta && attributeName && attributeValue) {
+    meta = document.createElement('meta')
+    meta.setAttribute(attributeName, attributeValue)
+    document.head.appendChild(meta)
+  }
+  if (meta) meta.setAttribute('content', content)
+}
+
 function InvitationApp() {
   const { settings } = useSiteSettings()
+
+  useEffect(() => {
+    setMetaContent('meta[property="og:url"]', settings.footer.shareUrl, 'property', 'og:url')
+    setMetaContent('meta[property="og:title"]', settings.footer.shareTitle, 'property', 'og:title')
+    setMetaContent('meta[property="og:description"]', settings.footer.shareText, 'property', 'og:description')
+    setMetaContent('meta[property="og:image"]', settings.footer.shareImage, 'property', 'og:image')
+    setMetaContent('meta[property="og:image:secure_url"]', settings.footer.shareImage, 'property', 'og:image:secure_url')
+    setMetaContent('meta[name="twitter:card"]', 'summary_large_image', 'name', 'twitter:card')
+    setMetaContent('meta[name="twitter:title"]', settings.footer.shareTitle, 'name', 'twitter:title')
+    setMetaContent('meta[name="twitter:description"]', settings.footer.shareText, 'name', 'twitter:description')
+    setMetaContent('meta[name="twitter:image"]', settings.footer.shareImage, 'name', 'twitter:image')
+    document.title = settings.footer.shareTitle
+  }, [settings.footer])
+
   const themeStyle = {
     '--wedding-font-body': settings.style.bodyFont,
     '--wedding-font-title': settings.style.titleFont,
