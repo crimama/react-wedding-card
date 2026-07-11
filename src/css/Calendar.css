@@ -65,3 +65,35 @@
   background: #fff;
   color: var(--point);
 }
+
+.calendar__date-line--rich p,
+.calendar__date-line--rich div,
+.calendar__place-line--rich p,
+.calendar__place-line--rich div {
+  margin: 0;
+}
+
+.calendar__date-line--rich font[face='GmarketSansLight'],
+.calendar__place-line--rich font[face='GmarketSansLight'] { font-family: 'GmarketSansLight', sans-serif; }
+.calendar__date-line--rich font[face='GmarketSansMedium'],
+.calendar__place-line--rich font[face='GmarketSansMedium'] { font-family: 'GmarketSansMedium', sans-serif; }
+.calendar__date-line--rich font[face='GmarketSansBold'],
+.calendar__place-line--rich font[face='GmarketSansBold'] { font-family: 'GmarketSansBold', sans-serif; }
+.calendar__date-line--rich font[face='Gowun Dodum'],
+.calendar__place-line--rich font[face='Gowun Dodum'] { font-family: 'Gowun Dodum', sans-serif; }
+.calendar__date-line--rich font[face='Gowun Batang'],
+.calendar__place-line--rich font[face='Gowun Batang'] { font-family: 'Gowun Batang', serif; }
+.calendar__date-line--rich font[face='Noto Sans KR'],
+.calendar__place-line--rich font[face='Noto Sans KR'] { font-family: 'Noto Sans KR', sans-serif; }
+.calendar__date-line--rich font[face='Noto Serif KR'],
+.calendar__place-line--rich font[face='Noto Serif KR'] { font-family: 'Noto Serif KR', serif; }
+.calendar__date-line--rich font[face='Nanum Gothic'],
+.calendar__place-line--rich font[face='Nanum Gothic'] { font-family: 'Nanum Gothic', sans-serif; }
+.calendar__date-line--rich font[face='Nanum Myeongjo'],
+.calendar__place-line--rich font[face='Nanum Myeongjo'] { font-family: 'Nanum Myeongjo', serif; }
+.calendar__date-line--rich font[face='Hahmlet'],
+.calendar__place-line--rich font[face='Hahmlet'] { font-family: 'Hahmlet', serif; }
+.calendar__date-line--rich font[face='Song Myung'],
+.calendar__place-line--rich font[face='Song Myung'] { font-family: 'Song Myung', serif; }
+.calendar__date-line--rich font[face='Black Han Sans'],
+.calendar__place-line--rich font[face='Black Han Sans'] { font-family: 'Black Han Sans', sans-serif; }

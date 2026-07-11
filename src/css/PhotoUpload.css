@@ -157,3 +157,42 @@
   font-size: 16px;
   line-height: 1.5;
 }
+
+.photo-upload__guide--rich p,
+.photo-upload__guide--rich div,
+.photo-upload__notice--rich p,
+.photo-upload__notice--rich div {
+  margin: 0 0 6px;
+}
+
+.photo-upload__guide--rich p:last-child,
+.photo-upload__guide--rich div:last-child,
+.photo-upload__notice--rich p:last-child,
+.photo-upload__notice--rich div:last-child {
+  margin-bottom: 0;
+}
+
+.photo-upload__guide--rich font[face='GmarketSansLight'],
+.photo-upload__notice--rich font[face='GmarketSansLight'] { font-family: 'GmarketSansLight', sans-serif; }
+.photo-upload__guide--rich font[face='GmarketSansMedium'],
+.photo-upload__notice--rich font[face='GmarketSansMedium'] { font-family: 'GmarketSansMedium', sans-serif; }
+.photo-upload__guide--rich font[face='GmarketSansBold'],
+.photo-upload__notice--rich font[face='GmarketSansBold'] { font-family: 'GmarketSansBold', sans-serif; }
+.photo-upload__guide--rich font[face='Gowun Dodum'],
+.photo-upload__notice--rich font[face='Gowun Dodum'] { font-family: 'Gowun Dodum', sans-serif; }
+.photo-upload__guide--rich font[face='Gowun Batang'],
+.photo-upload__notice--rich font[face='Gowun Batang'] { font-family: 'Gowun Batang', serif; }
+.photo-upload__guide--rich font[face='Noto Sans KR'],
+.photo-upload__notice--rich font[face='Noto Sans KR'] { font-family: 'Noto Sans KR', sans-serif; }
+.photo-upload__guide--rich font[face='Noto Serif KR'],
+.photo-upload__notice--rich font[face='Noto Serif KR'] { font-family: 'Noto Serif KR', serif; }
+.photo-upload__guide--rich font[face='Nanum Gothic'],
+.photo-upload__notice--rich font[face='Nanum Gothic'] { font-family: 'Nanum Gothic', sans-serif; }
+.photo-upload__guide--rich font[face='Nanum Myeongjo'],
+.photo-upload__notice--rich font[face='Nanum Myeongjo'] { font-family: 'Nanum Myeongjo', serif; }
+.photo-upload__guide--rich font[face='Hahmlet'],
+.photo-upload__notice--rich font[face='Hahmlet'] { font-family: 'Hahmlet', serif; }
+.photo-upload__guide--rich font[face='Song Myung'],
+.photo-upload__notice--rich font[face='Song Myung'] { font-family: 'Song Myung', serif; }
+.photo-upload__guide--rich font[face='Black Han Sans'],
+.photo-upload__notice--rich font[face='Black Han Sans'] { font-family: 'Black Han Sans', sans-serif; }
