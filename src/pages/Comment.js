@@ -16,6 +16,7 @@ const GUESTBOOK_COLLECTION = 'guestbook'
 const MAX_NAME_LENGTH = 20
 const MAX_PASSWORD_LENGTH = 20
 const MAX_MESSAGE_LENGTH = 500
+const INITIAL_VISIBLE_COMMENTS = 8
 
 function formatDate(timestamp) {
   const date = timestamp?.toDate ? timestamp.toDate() : new Date()
@@ -38,7 +39,7 @@ function Comment() {
   const [submitting, setSubmitting] = useState(false)
   const [showPasswordFor, setShowPasswordFor] = useState(null)
   const [deletePassword, setDeletePassword] = useState('')
-  const [visibleComments, setVisibleComments] = useState(5)
+  const [visibleComments, setVisibleComments] = useState(INITIAL_VISIBLE_COMMENTS)
   const [isExpanded, setIsExpanded] = useState(false)
   const [isWritingOpen, setIsWritingOpen] = useState(false)
 
@@ -117,7 +118,7 @@ function Comment() {
 
   const toggleCommentsVisibility = () => {
     if (isExpanded) {
-      setVisibleComments(5)
+      setVisibleComments(INITIAL_VISIBLE_COMMENTS)
       setIsExpanded(false)
     } else {
       setVisibleComments(comments.length)
@@ -194,7 +195,7 @@ function Comment() {
         )}
       </div>
 
-      {comments.length > 5 && (
+      {comments.length > INITIAL_VISIBLE_COMMENTS && (
         <button type='button' onClick={toggleCommentsVisibility} className='comment__btn-more'>
           {isExpanded ? '닫기' : '더보기'}
         </button>
