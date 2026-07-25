@@ -59,6 +59,68 @@ const LETTER_SPACING_OPTIONS = [
   { value: '0.12em', label: '매우 넓게' },
 ]
 
+const MAX_GALLERY_IMAGE_SIZE = 1600
+const MAX_GALLERY_THUMBNAIL_SIZE = 420
+const GALLERY_JPEG_QUALITY = 0.72
+const GALLERY_THUMBNAIL_QUALITY = 0.64
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(String(reader.result || ''))
+    reader.onerror = () => reject(new Error('이미지를 읽지 못했습니다.'))
+    reader.readAsDataURL(file)
+  })
+}
+
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const image = new Image()
+    image.onload = () => resolve(image)
+    image.onerror = () => reject(new Error('이미지를 불러오지 못했습니다.'))
+    image.src = src
+  })
+}
+
+function resizeImage(image, maxSize, quality) {
+  const scale = Math.min(1, maxSize / Math.max(image.width, image.height))
+  const width = Math.max(1, Math.round(image.width * scale))
+  const height = Math.max(1, Math.round(image.height * scale))
+  const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
+  const context = canvas.getContext('2d')
+  context.drawImage(image, 0, 0, width, height)
+  return canvas.toDataURL('image/jpeg', quality)
+}
+
+function formatBytes(bytes) {
+  if (bytes < 1024 * 1024) return `${Math.ceil(bytes / 1024)}KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)}MB`
+}
+
+function estimateDataUrlBytes(dataUrl) {
+  const base64 = dataUrl.split(',')[1] || ''
+  return Math.round(base64.length * 0.75)
+}
+
+async function fileToGalleryImage(file, index) {
+  const dataUrl = await readFileAsDataUrl(file)
+  const image = await loadImage(dataUrl)
+  const src = resizeImage(image, MAX_GALLERY_IMAGE_SIZE, GALLERY_JPEG_QUALITY)
+  const thumbnail = resizeImage(image, MAX_GALLERY_THUMBNAIL_SIZE, GALLERY_THUMBNAIL_QUALITY)
+  return {
+    id: `${Date.now()}-${index}-${file.name}`,
+    name: file.name,
+    alt: `임훈 오윤경 웨딩사진 ${index + 1}`,
+    src,
+    thumbnail,
+    width: image.width,
+    height: image.height,
+    size: estimateDataUrlBytes(src) + estimateDataUrlBytes(thumbnail),
+  }
+}
+
 function TextField({ label, value, onChange, placeholder }) {
   return (
     <label className='admin__field'>
@@ -295,6 +357,7 @@ function Admin() {
   const [draft, setDraft] = useState(defaultSiteConfig)
   const [accountGroupsText, setAccountGroupsText] = useState(JSON.stringify(defaultSiteConfig.account.groups, null, 2))
   const [status, setStatus] = useState('')
+  const [galleryStatus, setGalleryStatus] = useState('')
   const [isSaving, setIsSaving] = useState(false)
 
   useEffect(() => {
@@ -311,6 +374,57 @@ function Admin() {
 
   const setValue = (path, value) => {
     setDraft((current) => updateNestedValue(current, path, value))
+  }
+
+  const handleGalleryUpload = async (event) => {
+    const files = Array.from(event.target.files || []).filter((file) => file.type.startsWith('image/'))
+    if (files.length === 0) return
+
+    setGalleryStatus(`${files.length}장의 사진을 압축하는 중입니다...`)
+    try {
+      const convertedImages = []
+      for (let index = 0; index < files.length; index += 1) {
+        setGalleryStatus(`${index + 1}/${files.length}번째 사진을 압축하는 중입니다...`)
+        convertedImages.push(await fileToGalleryImage(files[index], (draft.gallery?.images?.length || 0) + index))
+      }
+
+      setDraft((current) => ({
+        ...current,
+        gallery: {
+          ...current.gallery,
+          images: [...(current.gallery?.images || []), ...convertedImages],
+        },
+      }))
+      const totalSize = convertedImages.reduce((sum, image) => sum + image.size, 0)
+      setGalleryStatus(`${convertedImages.length}장 추가 완료. 압축 후 약 ${formatBytes(totalSize)}입니다. 저장 버튼을 눌러야 반영됩니다.`)
+    } catch (error) {
+      console.error(error)
+      setGalleryStatus(`사진 처리 실패: ${error.message}`)
+    } finally {
+      event.target.value = ''
+    }
+  }
+
+  const removeGalleryImage = (imageIndex) => {
+    setDraft((current) => ({
+      ...current,
+      gallery: {
+        ...current.gallery,
+        images: (current.gallery?.images || []).filter((_, index) => index !== imageIndex),
+      },
+    }))
+    setGalleryStatus('선택한 사진을 목록에서 제거했습니다. 저장 버튼을 눌러야 반영됩니다.')
+  }
+
+  const clearGalleryImages = () => {
+    setDraft((current) => ({
+      ...current,
+      gallery: {
+        ...current.gallery,
+        images: [],
+      },
+    }))
+    setGalleryStatus('업로드 갤러리를 비웠습니다. 저장하면 기본 정적 갤러리로 돌아갑니다.')
   }
 
   const saveSettings = async () => {
@@ -387,6 +501,38 @@ function Admin() {
           <TextField label='신부 부모님' value={draft.invitation.brideParents} onChange={(value) => setValue('invitation.brideParents', value)} />
           <TextField label='신부 관계' value={draft.invitation.brideRelation} onChange={(value) => setValue('invitation.brideRelation', value)} />
           <TextField label='신부 표기' value={draft.invitation.brideName} onChange={(value) => setValue('invitation.brideName', value)} />
+        </div>
+      </section>
+
+      <section className='admin__section'>
+        <h2>갤러리</h2>
+        <div className='admin__grid'>
+          <TextField label='갤러리 제목' value={draft.gallery?.title} onChange={(value) => setValue('gallery.title', value)} />
+          <div className='admin__field admin__field--full'>
+            <span>사진 직접 업로드</span>
+            <input type='file' accept='image/*' multiple onChange={handleGalleryUpload} />
+            <p className='admin__hint'>업로드한 사진은 브라우저에서 자동 압축된 뒤 Firebase 설정에 저장됩니다. 저장 전까지 실제 청첩장에는 반영되지 않습니다.</p>
+            <p className='admin__hint'>사진을 너무 많이 올리면 Firebase 문서 용량 제한 때문에 저장이 실패할 수 있습니다. 그 경우 여러 장을 줄여서 다시 저장해주세요.</p>
+          </div>
+          {galleryStatus && <div className='admin__status admin__status--inline'>{galleryStatus}</div>}
+          <div className='admin__gallery-tools admin__field--full'>
+            <button type='button' className='admin__secondary-btn' onClick={clearGalleryImages}>업로드 갤러리 비우기</button>
+            <span>현재 업로드 사진 {(draft.gallery?.images || []).length}장</span>
+          </div>
+          {(draft.gallery?.images || []).length > 0 && (
+            <div className='admin__gallery-list admin__field--full'>
+              {(draft.gallery?.images || []).map((image, index) => (
+                <div className='admin__gallery-item' key={image.id || image.name || index}>
+                  <img src={image.thumbnail || image.src} alt={image.alt || `갤러리 사진 ${index + 1}`} />
+                  <div>
+                    <strong>{index + 1}. {image.name || '업로드 사진'}</strong>
+                    <span>{image.width && image.height ? `${image.width}×${image.height}` : '크기 정보 없음'} · {image.size ? formatBytes(image.size) : '용량 계산 전'}</span>
+                  </div>
+                  <button type='button' onClick={() => removeGalleryImage(index)}>삭제</button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
