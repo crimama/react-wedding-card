@@ -47,6 +47,10 @@ const defaultSiteConfig = {
     notice: '※ 서울대학교 정문/후문을 통과할 경우 통행료가 발생하므로 낙성대 방향으로 이용해주세요.',
     noticeHtml: '<p>※ 서울대학교 정문/후문을 통과할 경우 통행료가 발생하므로 낙성대 방향으로 이용해주세요.</p>',
   },
+  gallery: {
+    title: 'Gallery',
+    images: [],
+  },
   photoUpload: {
     eyebrow: 'PHOTO',
     title: '하객 사진 업로드',
