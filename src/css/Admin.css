@@ -631,3 +631,86 @@
 .admin__editor-preview-paper--rich font[face='Black Han Sans'] {
   font-family: 'Black Han Sans', sans-serif;
 }
+
+.admin__status--inline {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 0;
+}
+
+.admin__gallery-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #eadfd4;
+  border-radius: 16px;
+  background: rgba(255, 253, 249, 0.72);
+  color: #7f6b5e;
+  font-size: 13px;
+}
+
+.admin__gallery-tools .admin__secondary-btn {
+  padding: 9px 14px;
+  font-size: 13px;
+}
+
+.admin__gallery-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.admin__gallery-item {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #eadfd4;
+  border-radius: 16px;
+  background: #fffdf9;
+}
+
+.admin__gallery-item img {
+  width: 72px;
+  height: 88px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #eadfd4;
+}
+
+.admin__gallery-item strong,
+.admin__gallery-item span {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin__gallery-item strong {
+  color: #4e3b30;
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.admin__gallery-item span {
+  margin-top: 4px;
+  color: #8d7667;
+  font-size: 12px;
+}
+
+.admin__gallery-item button {
+  grid-column: 1 / -1;
+  width: 100%;
+  border: 1px solid #eadfd4;
+  border-radius: 10px;
+  padding: 7px 10px;
+  background: #fffaf3;
+  color: #ad7d79;
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 12px;
+}
