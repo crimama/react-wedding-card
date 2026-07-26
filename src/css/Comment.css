@@ -6,20 +6,32 @@
   --comment-border: var(--line);
   --comment-text: var(--ink);
   --comment-muted: var(--ink-soft);
+  --comment-font: 'Gowun Dodum', 'GmarketSansLight', sans-serif;
 }
 
 .comment {
   padding-left: 22px;
   padding-right: 22px;
+  font-family: var(--comment-font);
+}
+
+.comment button,
+.comment input,
+.comment textarea,
+.comment__modal-backdrop button,
+.comment__modal-backdrop input,
+.comment__modal-backdrop textarea {
+  font-family: var(--comment-font);
 }
 
 .comment__title {
   margin-bottom: 34px;
   color: var(--ink);
-  font-family: 'GmarketSansMedium', sans-serif;
+  font-family: var(--comment-font);
   font-size: 25px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.08em;
 }
 
 .comment__title::after {
@@ -47,8 +59,9 @@
 .comment__empty {
   padding: 32px 20px;
   color: var(--comment-muted);
-  font-size: 17px;
-  line-height: 1.6;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.65;
 }
 
 .comment__data {
@@ -67,10 +80,11 @@
 .comment__from {
   min-width: 0;
   color: var(--comment-accent-dark);
-  font-family: 'GmarketSansMedium', sans-serif;
+  font-family: var(--comment-font);
   font-size: 15px;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
   word-break: break-word;
 }
 
@@ -80,8 +94,10 @@
   border: none;
   background: transparent;
   color: rgba(141, 118, 103, 0.72);
-  font-family: 'GmarketSansLight', sans-serif;
+  font-family: var(--comment-font);
   font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
 }
 
 .comment__delete-link:hover {
@@ -90,10 +106,11 @@
 
 .comment__data-com {
   color: var(--comment-text);
-  font-family: 'Gowun Dodum', 'GmarketSansLight', sans-serif;
+  font-family: var(--comment-font);
   font-size: 15px;
-  line-height: 1.52;
-  letter-spacing: -0.015em;
+  font-weight: 400;
+  line-height: 1.58;
+  letter-spacing: -0.01em;
   word-break: keep-all;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
@@ -102,9 +119,10 @@
 .comment__date {
   margin-top: 8px;
   color: rgba(141, 118, 103, 0.78);
-  font-family: 'GmarketSansLight', sans-serif;
+  font-family: var(--comment-font);
   font-size: 11px;
-  line-height: 1.2;
+  font-weight: 400;
+  line-height: 1.3;
 }
 
 .comment__password {
@@ -121,8 +139,8 @@
   padding: 11px 12px;
   border: 1px solid var(--comment-border);
   border-radius: 8px;
-  font-family: 'GmarketSansLight';
-  font-size: 16px;
+  font-family: var(--comment-font);
+  font-size: 15px;
 }
 
 .comment__password button {
@@ -131,8 +149,9 @@
   border-radius: 8px;
   background: #fff;
   color: var(--comment-text);
-  font-family: 'GmarketSansLight';
-  font-size: 16px;
+  font-family: var(--comment-font);
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .comment__btn,
@@ -140,22 +159,22 @@
   box-sizing: border-box;
   width: min(380px, 100%);
   border-radius: 8px;
-  font-family: 'GmarketSansLight';
+  font-family: var(--comment-font);
 }
 
 .comment__btn {
   background-color: var(--comment-accent);
   border: 1px solid var(--comment-accent);
   color: #fff;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .comment__btn-open {
   height: 48px;
   margin-top: 24px;
-  font-family: 'GmarketSansMedium', sans-serif;
+  font-family: var(--comment-font);
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .comment__btn:hover:not(:disabled) {
@@ -174,8 +193,9 @@
   background-color: var(--paper-soft);
   border: 1px solid var(--comment-border);
   color: var(--comment-accent-dark);
-  font-family: 'GmarketSansMedium', sans-serif;
+  font-family: var(--comment-font);
   font-size: 13px;
+  font-weight: 600;
 }
 
 .comment__modal-backdrop {
@@ -187,6 +207,7 @@
   justify-content: center;
   padding: 22px;
   background: rgba(80, 62, 50, 0.42);
+  font-family: var(--comment-font);
 }
 
 .comment__modal {
@@ -211,14 +232,19 @@
 
 .comment__modal-title {
   color: var(--comment-accent);
-  font-size: 25px;
-  line-height: 1.2;
+  font-family: var(--comment-font);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
 }
 
 .comment__modal-guide {
   margin-top: 8px;
   color: var(--comment-muted);
-  font-size: 17px;
+  font-family: var(--comment-font);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.45;
 }
 
 .comment__modal-close {
@@ -227,7 +253,9 @@
   border: none;
   background: transparent;
   color: var(--comment-muted);
+  font-family: var(--comment-font);
   font-size: 30px;
+  font-weight: 400;
   line-height: 1;
 }
 
@@ -253,8 +281,9 @@
   border-radius: 8px;
   background: #fff;
   color: var(--comment-text);
-  font-family: 'GmarketSansLight';
-  font-size: 16px;
+  font-family: var(--comment-font);
+  font-size: 15px;
+  font-weight: 400;
 }
 
 .comment__message {
@@ -267,23 +296,27 @@
   border-radius: 8px;
   background: #fff;
   color: var(--comment-text);
-  font-family: 'GmarketSansLight';
-  font-size: 17px;
-  line-height: 1.45;
+  font-family: var(--comment-font);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.55;
 }
 
 .comment__count {
   margin-top: 6px;
   text-align: right;
   color: var(--comment-muted);
+  font-family: var(--comment-font);
   font-size: 13px;
+  font-weight: 400;
 }
 
 .comment__btn-submit {
   width: 100%;
   height: 52px;
   margin-top: 16px;
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 @media screen and (max-width: 430px) {
@@ -301,13 +334,9 @@
     padding: 12px 15px 11px;
   }
 
-  .comment__from {
-    font-size: 15px;
-  }
-
+  .comment__from,
   .comment__data-com {
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 15px;
   }
 
   .comment__date {
@@ -321,6 +350,6 @@
 
   .comment__btn-submit {
     height: 52px;
-    font-size: 18px;
+    font-size: 16px;
   }
 }
