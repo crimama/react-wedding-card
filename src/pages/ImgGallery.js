@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
+import { collection, getDocs, orderBy, query } from 'firebase/firestore'
+import db from '../firebase-config'
 import { useSiteSettings } from '../SiteSettingsContext'
+
+const GALLERY_IMAGES_COLLECTION = 'galleryImages'
 
 const PHOTO_NUMBERS = [
   1, 2, 3, 4, 5,
@@ -25,9 +29,25 @@ function getDefaultImages() {
 
 function ImgGallery() {
   const { settings } = useSiteSettings()
-  const uploadedImages = Array.isArray(settings.gallery?.images) ? settings.gallery.images : []
-  const images = uploadedImages.length > 0
-    ? uploadedImages.map((image, index) => ({
+  const [uploadedImages, setUploadedImages] = useState([])
+
+  useEffect(() => {
+    const fetchGalleryImages = async () => {
+      try {
+        const snapshot = await getDocs(query(collection(db, GALLERY_IMAGES_COLLECTION), orderBy('order', 'asc')))
+        setUploadedImages(snapshot.docs.map((item) => ({ id: item.id, ...item.data() })))
+      } catch (error) {
+        console.error('Failed to load gallery images:', error)
+      }
+    }
+
+    fetchGalleryImages()
+  }, [])
+
+  const legacyUploadedImages = Array.isArray(settings.gallery?.images) ? settings.gallery.images : []
+  const activeUploadedImages = uploadedImages.length > 0 ? uploadedImages : legacyUploadedImages
+  const images = activeUploadedImages.length > 0
+    ? activeUploadedImages.map((image, index) => ({
       original: image.src,
       thumbnail: image.thumbnail || image.src,
       originalAlt: image.alt || `임훈 오윤경 웨딩사진 ${index + 1}`,
