@@ -45,15 +45,13 @@ function ImgGallery() {
   }, [])
 
   const legacyUploadedImages = Array.isArray(settings.gallery?.images) ? settings.gallery.images : []
-  const activeUploadedImages = uploadedImages.length > 0 ? uploadedImages : legacyUploadedImages
-  const images = activeUploadedImages.length > 0
-    ? activeUploadedImages.map((image, index) => ({
-      original: image.src,
-      thumbnail: image.thumbnail || image.src,
-      originalAlt: image.alt || `임훈 오윤경 웨딩사진 ${index + 1}`,
-      thumbnailAlt: image.alt || `임훈 오윤경 웨딩사진 ${index + 1}`,
-    }))
-    : getDefaultImages()
+  const uploadedGalleryImages = [...legacyUploadedImages, ...uploadedImages].map((image, index) => ({
+    original: image.src,
+    thumbnail: image.thumbnail || image.src,
+    originalAlt: image.alt || `임훈 오윤경 추가 웨딩사진 ${index + 1}`,
+    thumbnailAlt: image.alt || `임훈 오윤경 추가 웨딩사진 ${index + 1}`,
+  }))
+  const images = [...getDefaultImages(), ...uploadedGalleryImages]
 
   return (
     <div className='bc-pink container'>
