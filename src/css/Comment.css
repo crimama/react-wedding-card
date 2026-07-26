@@ -6,7 +6,8 @@
   --comment-border: var(--line);
   --comment-text: var(--ink);
   --comment-muted: var(--ink-soft);
-  --comment-font: 'Gowun Dodum', 'GmarketSansLight', sans-serif;
+  --comment-font: 'GmarketSansLight', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  --comment-font-strong: 'GmarketSansMedium', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .comment {
@@ -27,11 +28,11 @@
 .comment__title {
   margin-bottom: 34px;
   color: var(--ink);
-  font-family: var(--comment-font);
-  font-size: 25px;
-  font-weight: 600;
+  font-family: var(--comment-font-strong);
+  font-size: 23px;
+  font-weight: 400;
   line-height: 1.25;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
 }
 
 .comment__title::after {
@@ -80,10 +81,10 @@
 .comment__from {
   min-width: 0;
   color: var(--comment-accent-dark);
-  font-family: var(--comment-font);
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.35;
+  font-family: var(--comment-font-strong);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.45;
   letter-spacing: -0.01em;
   word-break: break-word;
 }
@@ -107,9 +108,9 @@
 .comment__data-com {
   color: var(--comment-text);
   font-family: var(--comment-font);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
-  line-height: 1.58;
+  line-height: 1.7;
   letter-spacing: -0.01em;
   word-break: keep-all;
   overflow-wrap: anywhere;
@@ -172,9 +173,9 @@
 .comment__btn-open {
   height: 48px;
   margin-top: 24px;
-  font-family: var(--comment-font);
-  font-size: 16px;
-  font-weight: 600;
+  font-family: var(--comment-font-strong);
+  font-size: 15px;
+  font-weight: 400;
 }
 
 .comment__btn:hover:not(:disabled) {
@@ -372,4 +373,13 @@
 .comment__modal-backdrop .comment__count,
 .comment__modal-backdrop .comment__btn-submit {
   font-family: var(--comment-font) !important;
+}
+
+.comment .comment__title,
+.comment .comment__from,
+.comment .comment__btn,
+.comment .comment__btn-more,
+.comment__modal-backdrop .comment__modal-title,
+.comment__modal-backdrop .comment__btn-submit {
+  font-family: var(--comment-font-strong) !important;
 }
