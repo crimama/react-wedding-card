@@ -353,3 +353,23 @@
     font-size: 16px;
   }
 }
+
+/* Keep the whole guestbook visually consistent even when global title/button styles load later. */
+.comment .comment__title,
+.comment .comment__from,
+.comment .comment__data-com,
+.comment .comment__date,
+.comment .comment__delete-link,
+.comment .comment__btn,
+.comment .comment__btn-more,
+.comment .comment__password input,
+.comment .comment__password button,
+.comment__modal-backdrop .comment__modal-title,
+.comment__modal-backdrop .comment__modal-guide,
+.comment__modal-backdrop .comment__modal-close,
+.comment__modal-backdrop .commment_content input,
+.comment__modal-backdrop .comment__message,
+.comment__modal-backdrop .comment__count,
+.comment__modal-backdrop .comment__btn-submit {
+  font-family: var(--comment-font) !important;
+}
