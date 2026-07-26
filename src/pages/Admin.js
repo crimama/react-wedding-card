@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { setDoc, serverTimestamp } from 'firebase/firestore'
+import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage'
+import { storage } from '../firebase-config'
 import { defaultSiteConfig, getSettingsDocRef, mergeSettings, useSiteSettings } from '../SiteSettingsContext'
 
 function updateNestedValue(source, path, value) {
@@ -82,7 +84,7 @@ function loadImage(src) {
   })
 }
 
-function resizeImage(image, maxSize, quality) {
+function resizeImageToBlob(image, maxSize, quality) {
   const scale = Math.min(1, maxSize / Math.max(image.width, image.height))
   const width = Math.max(1, Math.round(image.width * scale))
   const height = Math.max(1, Math.round(image.height * scale))
@@ -91,7 +93,12 @@ function resizeImage(image, maxSize, quality) {
   canvas.height = height
   const context = canvas.getContext('2d')
   context.drawImage(image, 0, 0, width, height)
-  return canvas.toDataURL('image/jpeg', quality)
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) resolve(blob)
+      else reject(new Error('이미지 압축에 실패했습니다.'))
+    }, 'image/jpeg', quality)
+  })
 }
 
 function formatBytes(bytes) {
@@ -99,25 +106,33 @@ function formatBytes(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(1)}MB`
 }
 
-function estimateDataUrlBytes(dataUrl) {
-  const base64 = dataUrl.split(',')[1] || ''
-  return Math.round(base64.length * 0.75)
+function safeFileName(fileName) {
+  return fileName.replace(/[^a-zA-Z0-9._-]/g, '-').replace(/-+/g, '-')
+}
+
+async function uploadGalleryBlob(blob, path) {
+  const reference = storageRef(storage, path)
+  const snapshot = await uploadBytes(reference, blob, { contentType: 'image/jpeg' })
+  return getDownloadURL(snapshot.ref)
 }
 
 async function fileToGalleryImage(file, index) {
   const dataUrl = await readFileAsDataUrl(file)
   const image = await loadImage(dataUrl)
-  const src = resizeImage(image, MAX_GALLERY_IMAGE_SIZE, GALLERY_JPEG_QUALITY)
-  const thumbnail = resizeImage(image, MAX_GALLERY_THUMBNAIL_SIZE, GALLERY_THUMBNAIL_QUALITY)
+  const srcBlob = await resizeImageToBlob(image, MAX_GALLERY_IMAGE_SIZE, GALLERY_JPEG_QUALITY)
+  const thumbnailBlob = await resizeImageToBlob(image, MAX_GALLERY_THUMBNAIL_SIZE, GALLERY_THUMBNAIL_QUALITY)
+  const id = `${Date.now()}-${index}-${safeFileName(file.name)}`
+  const src = await uploadGalleryBlob(srcBlob, `gallery/${id}.jpg`)
+  const thumbnail = await uploadGalleryBlob(thumbnailBlob, `gallery/${id}-thumb.jpg`)
   return {
-    id: `${Date.now()}-${index}-${file.name}`,
+    id,
     name: file.name,
     alt: `임훈 오윤경 웨딩사진 ${index + 1}`,
     src,
     thumbnail,
     width: image.width,
     height: image.height,
-    size: estimateDataUrlBytes(src) + estimateDataUrlBytes(thumbnail),
+    size: srcBlob.size + thumbnailBlob.size,
   }
 }
 
@@ -380,11 +395,11 @@ function Admin() {
     const files = Array.from(event.target.files || []).filter((file) => file.type.startsWith('image/'))
     if (files.length === 0) return
 
-    setGalleryStatus(`${files.length}장의 사진을 압축하는 중입니다...`)
+    setGalleryStatus(`${files.length}장의 사진을 압축하고 Storage에 업로드하는 중입니다...`)
     try {
       const convertedImages = []
       for (let index = 0; index < files.length; index += 1) {
-        setGalleryStatus(`${index + 1}/${files.length}번째 사진을 압축하는 중입니다...`)
+        setGalleryStatus(`${index + 1}/${files.length}번째 사진을 압축하고 Storage에 업로드하는 중입니다...`)
         convertedImages.push(await fileToGalleryImage(files[index], (draft.gallery?.images?.length || 0) + index))
       }
 
@@ -396,7 +411,7 @@ function Admin() {
         },
       }))
       const totalSize = convertedImages.reduce((sum, image) => sum + image.size, 0)
-      setGalleryStatus(`${convertedImages.length}장 추가 완료. 압축 후 약 ${formatBytes(totalSize)}입니다. 저장 버튼을 눌러야 반영됩니다.`)
+      setGalleryStatus(`${convertedImages.length}장 업로드 완료. 압축 후 약 ${formatBytes(totalSize)}입니다. 저장 버튼을 눌러야 갤러리에 반영됩니다.`)
     } catch (error) {
       console.error(error)
       setGalleryStatus(`사진 처리 실패: ${error.message}`)
@@ -511,8 +526,8 @@ function Admin() {
           <div className='admin__field admin__field--full'>
             <span>사진 직접 업로드</span>
             <input type='file' accept='image/*' multiple onChange={handleGalleryUpload} />
-            <p className='admin__hint'>업로드한 사진은 브라우저에서 자동 압축된 뒤 Firebase 설정에 저장됩니다. 저장 전까지 실제 청첩장에는 반영되지 않습니다.</p>
-            <p className='admin__hint'>사진을 너무 많이 올리면 Firebase 문서 용량 제한 때문에 저장이 실패할 수 있습니다. 그 경우 여러 장을 줄여서 다시 저장해주세요.</p>
+            <p className='admin__hint'>업로드한 사진은 브라우저에서 자동 압축된 뒤 Firebase Storage에 저장됩니다. 저장 버튼을 눌러야 실제 청첩장 갤러리에 반영됩니다.</p>
+            <p className='admin__hint'>저장 전 목록에서 삭제할 수 있습니다. 저장하지 않고 페이지를 나가면 업로드한 사진 URL은 갤러리에 연결되지 않습니다.</p>
           </div>
           {galleryStatus && <div className='admin__status admin__status--inline'>{galleryStatus}</div>}
           <div className='admin__gallery-tools admin__field--full'>
