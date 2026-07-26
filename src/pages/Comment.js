@@ -157,7 +157,7 @@ function Comment() {
 
   return (
     <div className='bc-pink container comment'>
-      <div className='title comment__title'>방명록</div>
+      <div className='comment__title'>방명록</div>
 
       <div className='comment__container-data'>
         {loading ? (
