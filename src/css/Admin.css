@@ -703,14 +703,25 @@
   font-size: 12px;
 }
 
-.admin__gallery-item button {
+.admin__gallery-actions {
   grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.admin__gallery-actions button {
   width: 100%;
   border: 1px solid #eadfd4;
   border-radius: 10px;
-  padding: 7px 10px;
+  padding: 7px 8px;
   background: #fffaf3;
   color: #ad7d79;
   font-family: 'GmarketSansMedium', sans-serif;
   font-size: 12px;
+}
+
+.admin__gallery-actions button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
 }
