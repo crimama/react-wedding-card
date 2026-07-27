@@ -61,6 +61,13 @@ const LETTER_SPACING_OPTIONS = [
 ]
 
 const GALLERY_IMAGES_COLLECTION = 'galleryImages'
+const PHOTO_NUMBERS = [
+  1, 2, 3, 4, 5,
+  7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+  32, 33, 34, 35, 36, 37, 38, 39, 40,
+  41, 42, 43, 44, 45, 46, 48, 50, 51, 52, 53,
+]
 const MAX_GALLERY_IMAGE_SIZE = 1200
 const MAX_GALLERY_THUMBNAIL_SIZE = 360
 const GALLERY_JPEG_QUALITY = 0.68
@@ -125,6 +132,34 @@ async function fileToGalleryImage(file, index) {
     size,
     order: index,
   }
+}
+
+function getDefaultGalleryItems() {
+  return PHOTO_NUMBERS.map((photoNumber, index) => {
+    const number = String(photoNumber).padStart(2, '0')
+    return {
+      id: `default-${number}`,
+      type: 'default',
+      name: `기본 사진 ${index + 1}`,
+      src: `${process.env.PUBLIC_URL}/gallery/wedding-gallery-${number}.jpg`,
+      thumbnail: `${process.env.PUBLIC_URL}/gallery/wedding-gallery-${number}-thumb.jpg`,
+      width: null,
+      height: null,
+      size: null,
+      fallbackOrder: index,
+    }
+  })
+}
+
+function sortGalleryItemsBySavedOrder(items, savedOrder) {
+  if (!Array.isArray(savedOrder) || savedOrder.length === 0) return items
+  const orderMap = new Map(savedOrder.map((id, index) => [id, index]))
+  return [...items].sort((a, b) => {
+    const aOrder = orderMap.has(a.id) ? orderMap.get(a.id) : Number.MAX_SAFE_INTEGER
+    const bOrder = orderMap.has(b.id) ? orderMap.get(b.id) : Number.MAX_SAFE_INTEGER
+    if (aOrder !== bOrder) return aOrder - bOrder
+    return a.fallbackOrder - b.fallbackOrder
+  })
 }
 
 function TextField({ label, value, onChange, placeholder }) {
@@ -393,6 +428,19 @@ function Admin() {
     fontFamily: `${draft.style.bodyFont}, sans-serif`,
   }), [draft.style])
 
+  const galleryItems = useMemo(() => {
+    const defaultItems = getDefaultGalleryItems()
+    const uploadedItems = galleryImages.map((image, index) => ({
+      ...image,
+      id: `upload-${image.id}`,
+      firestoreId: image.id,
+      type: 'uploaded',
+      name: image.name || `업로드 사진 ${index + 1}`,
+      fallbackOrder: defaultItems.length + index,
+    }))
+    return sortGalleryItemsBySavedOrder([...defaultItems, ...uploadedItems], draft.gallery?.photoOrder)
+  }, [draft.gallery?.photoOrder, galleryImages])
+
   const setValue = (path, value) => {
     setDraft((current) => updateNestedValue(current, path, value))
   }
@@ -416,6 +464,25 @@ function Admin() {
       }
 
       setGalleryImages((current) => [...current, ...uploadedImages])
+      const uploadedOrderIds = uploadedImages.map((image) => `upload-${image.id}`)
+      const currentPhotoOrder = Array.isArray(draft.gallery?.photoOrder) && draft.gallery.photoOrder.length > 0
+        ? draft.gallery.photoOrder
+        : galleryItems.map((item) => item.id)
+      const nextPhotoOrder = [...currentPhotoOrder, ...uploadedOrderIds]
+      setDraft((current) => ({
+        ...current,
+        gallery: {
+          ...(current.gallery || {}),
+          photoOrder: nextPhotoOrder,
+        },
+      }))
+      await setDoc(getSettingsDocRef(), {
+        gallery: {
+          ...(draft.gallery || {}),
+          photoOrder: nextPhotoOrder,
+        },
+        updatedAt: serverTimestamp(),
+      }, { merge: true })
       const totalSize = uploadedImages.reduce((sum, image) => sum + image.size, 0)
       setGalleryStatus(`${uploadedImages.length}장 업로드 완료. 압축 후 약 ${formatBytes(totalSize)}입니다. 공개 갤러리에 바로 반영됩니다.`)
     } catch (error) {
@@ -426,8 +493,8 @@ function Admin() {
     }
   }
 
-  const saveGalleryOrder = async (nextImages) => {
-    await Promise.all(nextImages.map((image, index) => {
+  const saveUploadedImageOrder = async (nextUploadedImages) => {
+    await Promise.all(nextUploadedImages.map((image, index) => {
       const { id, ...imageData } = image
       return setDoc(doc(db, GALLERY_IMAGES_COLLECTION, id), {
         ...imageData,
@@ -437,37 +504,70 @@ function Admin() {
     }))
   }
 
-  const moveGalleryImage = async (imageIndex, direction) => {
-    const targetIndex = imageIndex + direction
-    if (targetIndex < 0 || targetIndex >= galleryImages.length) return
+  const saveFullGalleryOrder = async (nextItems) => {
+    const photoOrder = nextItems.map((item) => item.id)
+    const nextGallery = {
+      ...(draft.gallery || {}),
+      photoOrder,
+    }
 
-    const nextImages = [...galleryImages]
-    const [target] = nextImages.splice(imageIndex, 1)
-    nextImages.splice(targetIndex, 0, target)
-    const reorderedImages = nextImages.map((image, index) => ({ ...image, order: index }))
+    setDraft((current) => ({
+      ...current,
+      gallery: {
+        ...(current.gallery || {}),
+        photoOrder,
+      },
+    }))
 
-    setGalleryImages(reorderedImages)
-    setGalleryStatus('갤러리 사진 순서를 저장하는 중입니다...')
+    await setDoc(getSettingsDocRef(), {
+      gallery: nextGallery,
+      updatedAt: serverTimestamp(),
+    }, { merge: true })
+  }
+
+  const moveGalleryItem = async (itemIndex, direction) => {
+    const targetIndex = itemIndex + direction
+    if (targetIndex < 0 || targetIndex >= galleryItems.length) return
+
+    const nextItems = [...galleryItems]
+    const [target] = nextItems.splice(itemIndex, 1)
+    nextItems.splice(targetIndex, 0, target)
+
+    setGalleryStatus('전체 갤러리 사진 순서를 저장하는 중입니다...')
 
     try {
-      await saveGalleryOrder(reorderedImages)
-      setGalleryStatus('갤러리 사진 순서를 변경했습니다. 공개 갤러리에 바로 반영됩니다.')
+      await saveFullGalleryOrder(nextItems)
+      setGalleryStatus('전체 갤러리 사진 순서를 변경했습니다. 공개 갤러리에 바로 반영됩니다.')
     } catch (error) {
       console.error(error)
-      setGalleryImages(galleryImages)
       setGalleryStatus(`순서 변경 실패: ${error.message}`)
     }
   }
 
-  const removeGalleryImage = async (imageIndex) => {
-    const target = galleryImages[imageIndex]
+  const removeGalleryImage = async (firestoreId) => {
+    const target = galleryImages.find((image) => image.id === firestoreId)
     if (!target?.id) return
     try {
       await deleteDoc(doc(db, GALLERY_IMAGES_COLLECTION, target.id))
-      const nextImages = galleryImages.filter((_, index) => index !== imageIndex).map((image, index) => ({ ...image, order: index }))
+      const nextImages = galleryImages.filter((image) => image.id !== firestoreId).map((image, index) => ({ ...image, order: index }))
+      const nextPhotoOrder = (draft.gallery?.photoOrder || []).filter((id) => id !== `upload-${firestoreId}`)
       setGalleryImages(nextImages)
-      if (nextImages.length > 0) await saveGalleryOrder(nextImages)
-      setGalleryStatus('선택한 사진을 삭제했습니다. 공개 갤러리에 바로 반영됩니다.')
+      setDraft((current) => ({
+        ...current,
+        gallery: {
+          ...(current.gallery || {}),
+          photoOrder: nextPhotoOrder,
+        },
+      }))
+      if (nextImages.length > 0) await saveUploadedImageOrder(nextImages)
+      await setDoc(getSettingsDocRef(), {
+        gallery: {
+          ...(draft.gallery || {}),
+          photoOrder: nextPhotoOrder,
+        },
+        updatedAt: serverTimestamp(),
+      }, { merge: true })
+      setGalleryStatus('선택한 업로드 사진을 삭제했습니다. 공개 갤러리에 바로 반영됩니다.')
     } catch (error) {
       console.error(error)
       setGalleryStatus(`사진 삭제 실패: ${error.message}`)
@@ -481,8 +581,23 @@ function Admin() {
     }
     try {
       await Promise.all(galleryImages.map((image) => deleteDoc(doc(db, GALLERY_IMAGES_COLLECTION, image.id))))
+      const nextPhotoOrder = (draft.gallery?.photoOrder || []).filter((id) => !id.startsWith('upload-'))
       setGalleryImages([])
-      setGalleryStatus('업로드 갤러리를 비웠습니다. 기본 정적 갤러리로 돌아갑니다.')
+      setDraft((current) => ({
+        ...current,
+        gallery: {
+          ...(current.gallery || {}),
+          photoOrder: nextPhotoOrder,
+        },
+      }))
+      await setDoc(getSettingsDocRef(), {
+        gallery: {
+          ...(draft.gallery || {}),
+          photoOrder: nextPhotoOrder,
+        },
+        updatedAt: serverTimestamp(),
+      }, { merge: true })
+      setGalleryStatus('업로드 갤러리를 비웠습니다. 기본 사진 순서는 유지됩니다.')
     } catch (error) {
       console.error(error)
       setGalleryStatus(`갤러리 비우기 실패: ${error.message}`)
@@ -574,26 +689,34 @@ function Admin() {
             <span>사진 직접 업로드</span>
             <input type='file' accept='image/*' multiple onChange={handleGalleryUpload} />
             <p className='admin__hint'>업로드한 사진은 브라우저에서 자동 압축된 뒤 Firestore에 사진별 문서로 저장됩니다. 공개 갤러리에 바로 반영됩니다.</p>
-            <p className='admin__hint'>업로드 사진은 기본 정적 갤러리 49장 뒤에 추가됩니다. 위/아래 버튼으로 업로드 사진끼리의 공개 순서를 바꿀 수 있습니다.</p>
+            <p className='admin__hint'>기본 사진과 업로드 사진이 아래 목록에 함께 표시됩니다. 위/아래 버튼으로 공개 갤러리 전체 순서를 바꿀 수 있습니다.</p>
           </div>
           {galleryStatus && <div className='admin__status admin__status--inline'>{galleryStatus}</div>}
           <div className='admin__gallery-tools admin__field--full'>
             <button type='button' className='admin__secondary-btn' onClick={clearGalleryImages}>업로드 갤러리 비우기</button>
-            <span>현재 업로드 사진 {galleryImages.length}장</span>
+            <span>전체 사진 {galleryItems.length}장 · 업로드 사진 {galleryImages.length}장</span>
           </div>
-          {galleryImages.length > 0 && (
+          {galleryItems.length > 0 && (
             <div className='admin__gallery-list admin__field--full'>
-              {galleryImages.map((image, index) => (
+              {galleryItems.map((image, index) => (
                 <div className='admin__gallery-item' key={image.id || image.name || index}>
                   <img src={image.thumbnail || image.src} alt={image.alt || `갤러리 사진 ${index + 1}`} />
                   <div>
-                    <strong>{index + 1}. {image.name || '업로드 사진'}</strong>
-                    <span>{image.width && image.height ? `${image.width}×${image.height}` : '크기 정보 없음'} · {image.size ? formatBytes(image.size) : '용량 계산 전'}</span>
+                    <strong>{index + 1}. {image.name || '갤러리 사진'}</strong>
+                    <span>
+                      {image.type === 'default' ? '기본 사진' : '업로드 사진'}
+                      {image.width && image.height ? ` · ${image.width}×${image.height}` : ''}
+                      {image.size ? ` · ${formatBytes(image.size)}` : ''}
+                    </span>
                   </div>
                   <div className='admin__gallery-actions'>
-                    <button type='button' onClick={() => moveGalleryImage(index, -1)} disabled={index === 0}>위로</button>
-                    <button type='button' onClick={() => moveGalleryImage(index, 1)} disabled={index === galleryImages.length - 1}>아래로</button>
-                    <button type='button' onClick={() => removeGalleryImage(index)}>삭제</button>
+                    <button type='button' onClick={() => moveGalleryItem(index, -1)} disabled={index === 0}>위로</button>
+                    <button type='button' onClick={() => moveGalleryItem(index, 1)} disabled={index === galleryItems.length - 1}>아래로</button>
+                    {image.type === 'uploaded' ? (
+                      <button type='button' onClick={() => removeGalleryImage(image.firestoreId)}>삭제</button>
+                    ) : (
+                      <button type='button' disabled>기본</button>
+                    )}
                   </div>
                 </div>
               ))}
