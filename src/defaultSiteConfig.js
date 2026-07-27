@@ -50,6 +50,7 @@ const defaultSiteConfig = {
   gallery: {
     title: 'Gallery',
     images: [],
+    photoOrder: [],
   },
   photoUpload: {
     eyebrow: 'PHOTO',
