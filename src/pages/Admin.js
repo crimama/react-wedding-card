@@ -426,12 +426,47 @@ function Admin() {
     }
   }
 
+  const saveGalleryOrder = async (nextImages) => {
+    await Promise.all(nextImages.map((image, index) => {
+      const { id, ...imageData } = image
+      return setDoc(doc(db, GALLERY_IMAGES_COLLECTION, id), {
+        ...imageData,
+        order: index,
+        createdAt: serverTimestamp(),
+      })
+    }))
+  }
+
+  const moveGalleryImage = async (imageIndex, direction) => {
+    const targetIndex = imageIndex + direction
+    if (targetIndex < 0 || targetIndex >= galleryImages.length) return
+
+    const nextImages = [...galleryImages]
+    const [target] = nextImages.splice(imageIndex, 1)
+    nextImages.splice(targetIndex, 0, target)
+    const reorderedImages = nextImages.map((image, index) => ({ ...image, order: index }))
+
+    setGalleryImages(reorderedImages)
+    setGalleryStatus('갤러리 사진 순서를 저장하는 중입니다...')
+
+    try {
+      await saveGalleryOrder(reorderedImages)
+      setGalleryStatus('갤러리 사진 순서를 변경했습니다. 공개 갤러리에 바로 반영됩니다.')
+    } catch (error) {
+      console.error(error)
+      setGalleryImages(galleryImages)
+      setGalleryStatus(`순서 변경 실패: ${error.message}`)
+    }
+  }
+
   const removeGalleryImage = async (imageIndex) => {
     const target = galleryImages[imageIndex]
     if (!target?.id) return
     try {
       await deleteDoc(doc(db, GALLERY_IMAGES_COLLECTION, target.id))
-      setGalleryImages((current) => current.filter((_, index) => index !== imageIndex))
+      const nextImages = galleryImages.filter((_, index) => index !== imageIndex).map((image, index) => ({ ...image, order: index }))
+      setGalleryImages(nextImages)
+      if (nextImages.length > 0) await saveGalleryOrder(nextImages)
       setGalleryStatus('선택한 사진을 삭제했습니다. 공개 갤러리에 바로 반영됩니다.')
     } catch (error) {
       console.error(error)
@@ -539,7 +574,7 @@ function Admin() {
             <span>사진 직접 업로드</span>
             <input type='file' accept='image/*' multiple onChange={handleGalleryUpload} />
             <p className='admin__hint'>업로드한 사진은 브라우저에서 자동 압축된 뒤 Firestore에 사진별 문서로 저장됩니다. 공개 갤러리에 바로 반영됩니다.</p>
-            <p className='admin__hint'>업로드 사진이 1장 이상 있으면 기본 정적 갤러리 대신 업로드 갤러리가 표시됩니다. 모두 삭제하면 기본 갤러리로 돌아갑니다.</p>
+            <p className='admin__hint'>업로드 사진은 기본 정적 갤러리 49장 뒤에 추가됩니다. 위/아래 버튼으로 업로드 사진끼리의 공개 순서를 바꿀 수 있습니다.</p>
           </div>
           {galleryStatus && <div className='admin__status admin__status--inline'>{galleryStatus}</div>}
           <div className='admin__gallery-tools admin__field--full'>
@@ -555,7 +590,11 @@ function Admin() {
                     <strong>{index + 1}. {image.name || '업로드 사진'}</strong>
                     <span>{image.width && image.height ? `${image.width}×${image.height}` : '크기 정보 없음'} · {image.size ? formatBytes(image.size) : '용량 계산 전'}</span>
                   </div>
-                  <button type='button' onClick={() => removeGalleryImage(index)}>삭제</button>
+                  <div className='admin__gallery-actions'>
+                    <button type='button' onClick={() => moveGalleryImage(index, -1)} disabled={index === 0}>위로</button>
+                    <button type='button' onClick={() => moveGalleryImage(index, 1)} disabled={index === galleryImages.length - 1}>아래로</button>
+                    <button type='button' onClick={() => removeGalleryImage(index)}>삭제</button>
+                  </div>
                 </div>
               ))}
             </div>
