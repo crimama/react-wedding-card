@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { getApp } from 'firebase/app'
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
 import './App.css';
 
 import './css/Cover.css'
@@ -23,6 +25,32 @@ import Comment from './pages/Comment.js';
 import PhotoUpload from './pages/PhotoUpload.js';
 import Admin from './pages/Admin.js';
 import { SiteSettingsProvider, useSiteSettings } from './SiteSettingsContext';
+
+function AdminGate() {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const auth = getAuth(getApp())
+  useEffect(() => onAuthStateChanged(auth, currentUser => {
+    setUser(currentUser)
+    setLoading(false)
+  }), [auth])
+  const authorized = user && user.email === 'crimama2@gmail.com' && user.emailVerified && user.providerData.some(provider => provider.providerId === 'google.com')
+  const login = async () => {
+    setError('')
+    try { await signInWithPopup(auth, new GoogleAuthProvider()) }
+    catch (err) { setError('로그인하지 못했습니다. 팝업 차단 여부와 네트워크를 확인해 주세요. (' + err.code + ')') }
+  }
+  if (loading) return <main style={{padding: '3rem', textAlign: 'center'}}>로그인 상태를 확인하고 있습니다.</main>
+  if (authorized) return <><div style={{padding: '1rem', textAlign: 'right'}}><button type="button" onClick={() => signOut(auth)}>로그아웃</button></div><Admin /></>
+  return <main style={{maxWidth: 480, margin: '5rem auto', padding: '2rem', textAlign: 'center', lineHeight: 1.8}}>
+    <h1>청첩장 관리자 로그인</h1>
+    <p>허용된 Google 계정으로 로그인해 주세요.</p>
+    {user ? <><p>이 계정은 관리자 권한이 없습니다.</p><button type="button" onClick={() => signOut(auth)}>다른 계정으로 로그인</button></> : <button type="button" onClick={login}>Google로 로그인</button>}
+    {error && <p role="alert">{error}</p>}
+    <p><a href={process.env.PUBLIC_URL + '/'}>청첩장으로 돌아가기</a></p>
+  </main>
+}
 
 function setMetaContent(selector, content, attributeName, attributeValue) {
   if (!content) return
@@ -68,7 +96,7 @@ function InvitationApp() {
   const isAdminRoute = window.location.pathname.replace(/\/$/, '').endsWith('/admin') || searchParams.has('admin')
 
   if (isAdminRoute) {
-    return <Admin />
+    return <AdminGate />
   }
 
   return (
