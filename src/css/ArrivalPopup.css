@@ -188,5 +188,19 @@
   color: inherit;
 }
 
+.arrival-popup__photo {
+  margin-top: 10px;
+  padding: 4px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--wedding-text, #5f4a3d);
+  font-family: 'GmarketSansLight', sans-serif;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
 @keyframes arrival-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes arrival-up { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
