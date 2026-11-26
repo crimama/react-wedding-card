@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useSiteSettings } from '../SiteSettingsContext'
 
 const PHOTO_UPLOAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz0igMoMR-TwtcbYu-3ftZmZBTnBx8ka4qCUqmeD_OlbMv8JprTBZE_6je7ESueKfgz0w/exec'
@@ -27,6 +27,19 @@ async function postJson(payload) {
   const result = await response.json()
   if (!result.ok) throw new Error(result.error || 'upload failed')
   return result
+}
+
+async function uploadImage(file, uploaderName, memo) {
+  const payload = {
+    name: uploaderName,
+    memo,
+    files: [{ name: file.name, mimeType: file.type, data: await readFileAsBase64(file) }],
+  }
+  await fetch(PHOTO_UPLOAD_ENDPOINT, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: new URLSearchParams({ payload: JSON.stringify(payload) }),
+  })
 }
 
 async function uploadVideo(file, uploaderName, memo, onProgress) {
@@ -123,6 +136,33 @@ function PhotoUpload() {
   const [status, setStatus] = useState('')
   const [uploading, setUploading] = useState(false)
 
+  useEffect(() => {
+    if (!uploading) return undefined
+    let wakeLock = null
+    const requestWakeLock = async () => {
+      try {
+        if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen')
+      } catch (error) {
+        wakeLock = null
+      }
+    }
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'visible') requestWakeLock()
+    }
+    const onBeforeUnload = (event) => {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+    requestWakeLock()
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    window.addEventListener('beforeunload', onBeforeUnload)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange)
+      window.removeEventListener('beforeunload', onBeforeUnload)
+      if (wakeLock) wakeLock.release().catch(() => {})
+    }
+  }, [uploading])
+
   const isConfigured = PHOTO_UPLOAD_ENDPOINT.startsWith('https://script.google.com/macros/s/')
 
   const totalSize = useMemo(
@@ -178,36 +218,33 @@ function PhotoUpload() {
     const trimmedMemo = memo.trim()
 
     try {
-      for (let index = 0; index < files.length; index += 1) {
-        const file = files[index]
-        setStatus(formatMessage(photoUpload.uploadingProgressTemplate, { current: index + 1, total: files.length }))
+      const images = files.filter((file) => !isVideoFile(file))
+      const videos = files.filter((file) => isVideoFile(file))
+      const total = files.length
+      let completed = 0
+      const updateProgress = () => {
+        setStatus(formatMessage(photoUpload.uploadingProgressTemplate, { current: Math.min(completed + 1, total), total }))
+      }
+      updateProgress()
 
-        if (isVideoFile(file)) {
-          await uploadVideo(file, trimmedName, trimmedMemo, (percent) => {
-            setStatus(`동영상 업로드 중 (${index + 1}/${files.length}) ${percent}% · 화면을 닫지 말아 주세요`)
-          })
-          continue
+      let nextImage = 0
+      const imageWorker = async () => {
+        while (nextImage < images.length) {
+          const file = images[nextImage]
+          nextImage += 1
+          await uploadImage(file, trimmedName, trimmedMemo)
+          completed += 1
+          updateProgress()
         }
+      }
+      await Promise.all([imageWorker(), imageWorker(), imageWorker()])
 
-        const encodedFile = {
-          name: file.name,
-          mimeType: file.type,
-          data: await readFileAsBase64(file),
-        }
-
-        const payload = {
-          name: trimmedName,
-          memo: trimmedMemo,
-          files: [encodedFile],
-        }
-
-        const body = new URLSearchParams({ payload: JSON.stringify(payload) })
-
-        await fetch(PHOTO_UPLOAD_ENDPOINT, {
-          method: 'POST',
-          mode: 'no-cors',
-          body,
+      for (let index = 0; index < videos.length; index += 1) {
+        const position = completed + 1
+        await uploadVideo(videos[index], trimmedName, trimmedMemo, (percent) => {
+          setStatus(`동영상 업로드 중 (${position}/${total}) ${percent}% · 화면을 닫지 말아 주세요`)
         })
+        completed += 1
       }
 
       setUploaderName('')
