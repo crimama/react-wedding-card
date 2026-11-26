@@ -16,6 +16,7 @@
   width: min(380px, 100%);
   max-height: calc(100vh - 32px);
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 26px 20px 20px;
   border-radius: 18px;
   background: var(--wedding-paper, #fffdf9);
