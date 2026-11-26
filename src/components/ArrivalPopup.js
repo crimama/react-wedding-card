@@ -50,7 +50,7 @@ function ArrivalPopup() {
               <span className='arrival-popup__step-num'>1</span>
               <div>지하철 2호선<br /><strong className='arrival-popup__strong'>낙성대역</strong> 4번 출구</div>
             </div>
-            <div className='arrival-popup__arrow' aria-hidden='true'>↓</div>
+            <div className='arrival-popup__arrow' aria-hidden='true'>→</div>
             <div className='arrival-popup__step'>
               <span className='arrival-popup__step-num'>2</span>
               <div>마을버스<br /><strong className='arrival-popup__strong'>관악02</strong> 승차</div>
