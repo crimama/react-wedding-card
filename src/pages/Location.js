@@ -2,7 +2,7 @@ import React from 'react'
 import naverMapIcon from '../images/nmap-icon.png';
 import kakaoNaviIcon from '../images/knavi-icon.png';
 import tmapIcon from '../images/tmap-icon.png';
-import locationMap from '../images/location-map.png';
+import locationMap from '../images/location-map-popup.jpg';
 import { useSiteSettings } from '../SiteSettingsContext'
 
 const LAT = 37.4657134;
