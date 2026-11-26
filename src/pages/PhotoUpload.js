@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { useSiteSettings } from '../SiteSettingsContext'
 
-const PHOTO_UPLOAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwXjruiVY1yfJkvXMAkwtrytSw2_nk8EGTUufAC5lGkLrXpxxTW8GJ9xCIHzLyVPS4jtA/exec'
+const PHOTO_UPLOAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz0igMoMR-TwtcbYu-3ftZmZBTnBx8ka4qCUqmeD_OlbMv8JprTBZE_6je7ESueKfgz0w/exec'
 const MAX_FILES = 10
 const MAX_FILE_BYTES = 20 * 1024 * 1024
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/gif']
