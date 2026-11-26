@@ -202,5 +202,50 @@
   opacity: 0.85;
 }
 
+/* readability: heavier and darker text */
+.arrival-popup {
+  font-family: 'GmarketSansMedium', sans-serif;
+  color: #3a2c23;
+}
+
+.arrival-popup__eyebrow {
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 13px;
+  color: #8a5a3c;
+}
+
+.arrival-popup__when {
+  font-size: 14px;
+  color: #3a2c23;
+}
+
+.arrival-popup__label {
+  font-family: 'GmarketSansBold', sans-serif;
+  color: #8a5a3c;
+}
+
+.arrival-popup__step {
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 13px;
+  color: #3a2c23;
+}
+
+.arrival-popup__note {
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 13px;
+  color: #3a2c23;
+}
+
+.arrival-popup__photo {
+  font-family: 'GmarketSansMedium', sans-serif;
+  color: #3a2c23;
+  opacity: 1;
+}
+
+.arrival-popup__button--ghost {
+  color: #3a2c23;
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
 @keyframes arrival-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes arrival-up { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
