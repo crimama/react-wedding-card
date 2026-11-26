@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import locationMap from '../images/location-map.png'
+import locationMap from '../images/location-map-popup.jpg'
 import { useSiteSettings } from '../SiteSettingsContext'
 
 function ArrivalPopup() {
@@ -55,6 +55,10 @@ function ArrivalPopup() {
               <span className='arrival-popup__step-num'>2</span>
               <div>마을버스<br /><strong className='arrival-popup__strong'>관악02</strong> 승차</div>
             </div>
+          </div>
+          <div className='arrival-popup__step arrival-popup__step--stop'>
+            <span className='arrival-popup__step-num'>3</span>
+            <div><strong className='arrival-popup__strong arrival-popup__strong--stop'>서울대후문·연구공원</strong> 정류장 하차</div>
           </div>
           <p className='arrival-popup__note'>서울대입구역이 아닌 <strong>낙성대역</strong>에서 내려 주세요.</p>
         </div>
