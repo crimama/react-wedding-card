@@ -29,6 +29,14 @@ function ArrivalPopup() {
     }, 50)
   }
 
+  const goToPhotoUpload = () => {
+    setOpen(false)
+    setTimeout(() => {
+      const target = document.querySelector('.photo-upload')
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 50)
+  }
+
   return (
     <div className='arrival-popup__backdrop' onClick={() => setOpen(false)}>
       <div className='arrival-popup' role='dialog' aria-modal='true' aria-labelledby='arrival-popup-title' onClick={(event) => event.stopPropagation()}>
@@ -67,6 +75,8 @@ function ArrivalPopup() {
           <button type='button' className='arrival-popup__button arrival-popup__button--ghost' onClick={() => setOpen(false)}>닫기</button>
           <button type='button' className='arrival-popup__button' onClick={goToLocation}>오시는 길 자세히</button>
         </div>
+
+        <button type='button' className='arrival-popup__photo' onClick={goToPhotoUpload}>📷 사진 올리기</button>
       </div>
     </div>
   )
