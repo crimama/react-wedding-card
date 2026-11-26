@@ -1,0 +1,172 @@
+.arrival-popup__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(40, 30, 24, 0.55);
+  animation: arrival-fade 0.25s ease-out;
+}
+
+.arrival-popup {
+  position: relative;
+  box-sizing: border-box;
+  width: min(380px, 100%);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  padding: 26px 20px 20px;
+  border-radius: 18px;
+  background: var(--wedding-paper, #fffdf9);
+  color: var(--wedding-text, #5f4a3d);
+  font-family: 'GmarketSansLight', sans-serif;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+  animation: arrival-up 0.3s ease-out;
+}
+
+.arrival-popup__close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.arrival-popup__eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--wedding-accent, #b08968);
+}
+
+.arrival-popup__title {
+  margin: 6px 0 14px;
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 21px;
+  font-weight: 400;
+}
+
+.arrival-popup__when {
+  margin-bottom: 14px;
+  font-size: 15px;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.arrival-popup__label {
+  display: inline-block;
+  min-width: 40px;
+  margin-right: 6px;
+  font-family: 'GmarketSansMedium', sans-serif;
+  color: var(--wedding-accent, #b08968);
+}
+
+.arrival-popup__map {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.arrival-popup__route {
+  margin-top: 14px;
+  padding: 16px 14px;
+  border: 2px solid #c43d36;
+  border-radius: 14px;
+  background: #fff6f4;
+}
+
+.arrival-popup__route-title {
+  margin-bottom: 12px;
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 15px;
+  color: #c43d36;
+}
+
+.arrival-popup__steps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.arrival-popup__step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.arrival-popup__step-num {
+  flex: 0 0 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #c43d36;
+  color: #fff;
+  font-family: 'GmarketSansMedium', sans-serif;
+  line-height: 28px;
+  text-align: center;
+}
+
+.arrival-popup__strong {
+  font-family: 'GmarketSansBold', sans-serif;
+  font-size: 22px;
+  color: #c43d36;
+}
+
+.arrival-popup__arrow {
+  font-size: 18px;
+  color: #c43d36;
+}
+
+.arrival-popup__note {
+  margin: 12px 0 0;
+  font-size: 14px;
+}
+
+.arrival-popup__note strong {
+  color: #c43d36;
+}
+
+.arrival-popup__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.arrival-popup__button {
+  flex: 1;
+  padding: 12px 8px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--wedding-accent, #b08968);
+  color: var(--wedding-button-text, #fff);
+  font-family: 'GmarketSansMedium', sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.arrival-popup__button--ghost {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: inherit;
+}
+
+@keyframes arrival-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes arrival-up { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
