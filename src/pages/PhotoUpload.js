@@ -5,6 +5,59 @@ const PHOTO_UPLOAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz0igMoMR
 const MAX_FILES = 30
 const MAX_FILE_BYTES = 20 * 1024 * 1024
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/gif']
+const MAX_VIDEO_BYTES = 500 * 1024 * 1024
+const VIDEO_CHUNK_BYTES = 8 * 1024 * 1024
+const VIDEO_EXTENSIONS = { mp4: 'video/mp4', mov: 'video/quicktime', m4v: 'video/x-m4v', webm: 'video/webm', '3gp': 'video/3gpp' }
+
+function getVideoType(file) {
+  if (file.type && file.type.startsWith('video/')) return file.type
+  const extension = String(file.name || '').split('.').pop().toLowerCase()
+  return VIDEO_EXTENSIONS[extension] || ''
+}
+
+function isVideoFile(file) {
+  return Boolean(getVideoType(file))
+}
+
+async function postJson(payload) {
+  const response = await fetch(PHOTO_UPLOAD_ENDPOINT, {
+    method: 'POST',
+    body: new URLSearchParams({ payload: JSON.stringify(payload) }),
+  })
+  const result = await response.json()
+  if (!result.ok) throw new Error(result.error || 'upload failed')
+  return result
+}
+
+async function uploadVideo(file, uploaderName, memo, onProgress) {
+  const mimeType = getVideoType(file)
+  const { session } = await postJson({
+    action: 'videoStart',
+    name: uploaderName,
+    memo,
+    fileName: file.name,
+    mimeType,
+    size: file.size,
+  })
+
+  let start = 0
+  while (start < file.size) {
+    const end = Math.min(start + VIDEO_CHUNK_BYTES, file.size)
+    const data = await readFileAsBase64(file.slice(start, end))
+    let result = null
+    for (let attempt = 0; attempt < 3 && !result; attempt += 1) {
+      try {
+        result = await postJson({ action: 'videoChunk', session, start, total: file.size, data })
+      } catch (error) {
+        if (attempt === 2) throw error
+        await new Promise((resolve) => setTimeout(resolve, 1500))
+      }
+    }
+    start = end
+    onProgress(Math.round((start / file.size) * 100))
+    if (result.done) break
+  }
+}
 
 function readFileAsBase64(file) {
   return new Promise((resolve, reject) => {
@@ -86,14 +139,14 @@ function PhotoUpload() {
       return
     }
 
-    const invalidFile = selectedFiles.find((file) => !ALLOWED_IMAGE_TYPES.includes(file.type))
+    const invalidFile = selectedFiles.find((file) => !ALLOWED_IMAGE_TYPES.includes(file.type) && !isVideoFile(file))
     if (invalidFile) {
       alert(photoUpload.invalidFileMessage)
       event.target.value = ''
       return
     }
 
-    const oversizedFile = selectedFiles.find((file) => file.size > MAX_FILE_BYTES)
+    const oversizedFile = selectedFiles.find((file) => file.size > (isVideoFile(file) ? MAX_VIDEO_BYTES : MAX_FILE_BYTES))
     if (oversizedFile) {
       alert(photoUpload.oversizedFileMessage)
       event.target.value = ''
@@ -128,6 +181,13 @@ function PhotoUpload() {
       for (let index = 0; index < files.length; index += 1) {
         const file = files[index]
         setStatus(formatMessage(photoUpload.uploadingProgressTemplate, { current: index + 1, total: files.length }))
+
+        if (isVideoFile(file)) {
+          await uploadVideo(file, trimmedName, trimmedMemo, (percent) => {
+            setStatus(`동영상 업로드 중 (${index + 1}/${files.length}) ${percent}% · 화면을 닫지 말아 주세요`)
+          })
+          continue
+        }
 
         const encodedFile = {
           name: file.name,
@@ -192,7 +252,7 @@ function PhotoUpload() {
           <span>{files.length > 0 ? `${files.length}${photoUpload.selectedTextSuffix}` : photoUpload.selectButtonText}</span>
           <input
             type='file'
-            accept='image/jpeg,image/png,image/webp,image/heic,image/heif,image/gif'
+            accept='image/*,video/*'
             multiple
             onChange={onFileChange}
           />
