@@ -97,8 +97,6 @@ function InvitationApp() {
   const searchParams = new URLSearchParams(window.location.search)
   const isAdminRoute = window.location.pathname.replace(/\/$/, '').endsWith('/admin') || searchParams.has('admin')
 
-  const isTestRoute = window.location.pathname.replace(/\/$/, '').endsWith('/test') || searchParams.has('test')
-
   if (isAdminRoute) {
     return <AdminGate />
   }
@@ -114,7 +112,7 @@ function InvitationApp() {
       <Comment />
       <PhotoUpload />
       <Footer />
-      {isTestRoute && <ArrivalPopup />}
+      <ArrivalPopup />
     </div>
   );
 }
