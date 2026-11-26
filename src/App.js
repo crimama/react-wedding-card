@@ -23,6 +23,8 @@ import Footer from './components/Footer.js';
 import Account from './pages/Account.js';
 import Comment from './pages/Comment.js';
 import PhotoUpload from './pages/PhotoUpload.js';
+import ArrivalPopup from './components/ArrivalPopup.js';
+import './css/ArrivalPopup.css'
 import Admin from './pages/Admin.js';
 import { SiteSettingsProvider, useSiteSettings } from './SiteSettingsContext';
 
@@ -95,6 +97,8 @@ function InvitationApp() {
   const searchParams = new URLSearchParams(window.location.search)
   const isAdminRoute = window.location.pathname.replace(/\/$/, '').endsWith('/admin') || searchParams.has('admin')
 
+  const isTestRoute = window.location.pathname.replace(/\/$/, '').endsWith('/test') || searchParams.has('test')
+
   if (isAdminRoute) {
     return <AdminGate />
   }
@@ -110,6 +114,7 @@ function InvitationApp() {
       <Comment />
       <PhotoUpload />
       <Footer />
+      {isTestRoute && <ArrivalPopup />}
     </div>
   );
 }
