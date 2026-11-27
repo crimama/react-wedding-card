@@ -26,6 +26,8 @@ import PhotoUpload from './pages/PhotoUpload.js';
 import ArrivalPopup from './components/ArrivalPopup.js';
 import './css/ArrivalPopup.css'
 import Admin from './pages/Admin.js';
+import VisitStats from './components/VisitStats.js';
+import { excludeThisBrowser, logVisit } from './visitTracker';
 import { SiteSettingsProvider, useSiteSettings } from './SiteSettingsContext';
 
 function AdminGate() {
@@ -38,13 +40,17 @@ function AdminGate() {
     setLoading(false)
   }), [auth])
   const authorized = user && user.email === 'crimama2@gmail.com' && user.emailVerified && user.providerData.some(provider => provider.providerId === 'google.com')
+  useEffect(() => {
+    if (authorized) excludeThisBrowser()
+  }, [authorized])
+
   const login = async () => {
     setError('')
     try { await signInWithPopup(auth, new GoogleAuthProvider()) }
     catch (err) { setError('로그인하지 못했습니다. 팝업 차단 여부와 네트워크를 확인해 주세요. (' + err.code + ')') }
   }
   if (loading) return <main style={{padding: '3rem', textAlign: 'center'}}>로그인 상태를 확인하고 있습니다.</main>
-  if (authorized) return <><div style={{padding: '1rem', textAlign: 'right'}}><button type="button" onClick={() => signOut(auth)}>로그아웃</button></div><Admin /></>
+  if (authorized) return <><div style={{padding: '1rem', textAlign: 'right'}}><button type="button" onClick={() => signOut(auth)}>로그아웃</button></div><VisitStats /><Admin /></>
   return <main style={{maxWidth: 480, margin: '5rem auto', padding: '2rem', textAlign: 'center', lineHeight: 1.8}}>
     <h1>청첩장 관리자 로그인</h1>
     <p>허용된 Google 계정으로 로그인해 주세요.</p>
@@ -80,6 +86,10 @@ function InvitationApp() {
     setMetaContent('meta[name="twitter:image"]', settings.footer.shareImage, 'name', 'twitter:image')
     document.title = settings.footer.shareTitle
   }, [settings.footer])
+
+  useEffect(() => {
+    logVisit()
+  }, [])
 
   const themeStyle = {
     '--wedding-font-body': settings.style.bodyFont,
